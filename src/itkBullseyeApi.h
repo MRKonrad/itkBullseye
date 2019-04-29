@@ -9,8 +9,4 @@
 
 ITKBULLSEYELIB_EXPORT void dummyFunction();
 
-int main(){
-    return 0;
-}
-
 #endif //ITKBULLSEYE_ITKBULLSEYEAPI_H
