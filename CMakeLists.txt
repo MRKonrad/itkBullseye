@@ -13,7 +13,7 @@ file(GLOB_RECURSE SRC_FILES
         src/*.t*)
 
 add_library(itkBullseyeLib SHARED ${SRC_FILES})
-add_library(itkBullseyeLib itkBullseyeLibStatic ${SRC_FILES})
+add_library(itkBullseyeLibStatic SHARED ${SRC_FILES})
 
 include_directories(${CMAKE_SOURCE_DIR}/src)
 include_directories(${PROJECT_BINARY_DIR})
