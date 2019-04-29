@@ -51,4 +51,4 @@ deploy:
     condition: ${CXX} == "g++" # I guess I have to pick one compiler
 
 notifications:
-  webhooks: ${slack_webhook}
+  slack: ${SLACK_SECURE}

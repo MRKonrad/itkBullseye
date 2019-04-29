@@ -1,3 +1,18 @@
+bin/*
+x64/*
+Win32/*
+install/
+itkBullseye*.dir/
+tests/testData/temp
+tests/testData/dicom/Volunteer*
+
+# mac
+*.DS_Store
+
+# clion
+.idea
+cmake-build-*
+
 # Prerequisites
 *.d
 
