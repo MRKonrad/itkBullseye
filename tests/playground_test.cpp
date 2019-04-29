@@ -22,12 +22,7 @@ TEST(playground, DummyFilter_test) {
 }
 
 TEST(playground, itkBullseyeApi_test) {
-
+    dummyFunction();
     EXPECT_NO_THROW(dummyFunction());
 
 }
-
-
-
-
-

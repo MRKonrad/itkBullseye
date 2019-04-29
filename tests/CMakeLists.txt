@@ -11,6 +11,7 @@ file(GLOB_RECURSE TESTS_FILES ${PROJECT_SOURCE_DIR}/tests/*.c* ${PROJECT_SOURCE_
 
 add_executable(itkBullseyeTests ${TESTS_FILES})
 target_link_libraries(itkBullseyeTests PUBLIC gtest)
+target_link_libraries(itkBullseyeTests PUBLIC itkBullseyeLibStatic)
 
 if(WIN32)
   target_link_libraries(itkBullseyeTests PUBLIC itkBullseyeLibStatic)

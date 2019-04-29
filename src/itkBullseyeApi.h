@@ -8,9 +8,6 @@
 #include "itkbullseyelib_export.h"
 
 ITKBULLSEYELIB_EXPORT void dummyFunction();
-
-int main(){
-    return 0;
-}
+void dummyFunction();
 
 #endif //ITKBULLSEYE_ITKBULLSEYEAPI_H
