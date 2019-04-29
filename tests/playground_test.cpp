@@ -5,6 +5,7 @@
 #include "gtest/gtest.h"
 
 #include "itkDummyFilter.h"
+#include "itkBullseyeApi.h"
 
 
 TEST(playground, DummyFilter_test) {
@@ -17,6 +18,12 @@ TEST(playground, DummyFilter_test) {
     FilterType::Pointer filter = FilterType::New();
 
     EXPECT_NO_THROW(filter->Update());
+
+}
+
+TEST(playground, itkBullseyeApi_test) {
+
+    EXPECT_NO_THROW(dummyFunction());
 
 }
 

@@ -149,6 +149,33 @@ gtest/fast:
 	$(MAKE) -f tests/CMakeFiles/gtest.dir/build.make tests/CMakeFiles/gtest.dir/build
 .PHONY : gtest/fast
 
+src/itkBullseyeApi.o: src/itkBullseyeApi.cpp.o
+
+.PHONY : src/itkBullseyeApi.o
+
+# target to build an object file
+src/itkBullseyeApi.cpp.o:
+	$(MAKE) -f CMakeFiles/itkBullseyeLib.dir/build.make CMakeFiles/itkBullseyeLib.dir/src/itkBullseyeApi.cpp.o
+.PHONY : src/itkBullseyeApi.cpp.o
+
+src/itkBullseyeApi.i: src/itkBullseyeApi.cpp.i
+
+.PHONY : src/itkBullseyeApi.i
+
+# target to preprocess a source file
+src/itkBullseyeApi.cpp.i:
+	$(MAKE) -f CMakeFiles/itkBullseyeLib.dir/build.make CMakeFiles/itkBullseyeLib.dir/src/itkBullseyeApi.cpp.i
+.PHONY : src/itkBullseyeApi.cpp.i
+
+src/itkBullseyeApi.s: src/itkBullseyeApi.cpp.s
+
+.PHONY : src/itkBullseyeApi.s
+
+# target to generate assembly for a file
+src/itkBullseyeApi.cpp.s:
+	$(MAKE) -f CMakeFiles/itkBullseyeLib.dir/build.make CMakeFiles/itkBullseyeLib.dir/src/itkBullseyeApi.cpp.s
+.PHONY : src/itkBullseyeApi.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -160,6 +187,9 @@ help:
 	@echo "... itkBullseyeLib"
 	@echo "... itkBullseyeTests"
 	@echo "... gtest"
+	@echo "... src/itkBullseyeApi.o"
+	@echo "... src/itkBullseyeApi.i"
+	@echo "... src/itkBullseyeApi.s"
 .PHONY : help
 
 

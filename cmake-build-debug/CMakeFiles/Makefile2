@@ -66,7 +66,7 @@ CMAKE_BINARY_DIR = /Users/kwerys/Code/itkBullseye/cmake-build-debug
 CMakeFiles/itkBullseyeLib.dir/all:
 	$(MAKE) -f CMakeFiles/itkBullseyeLib.dir/build.make CMakeFiles/itkBullseyeLib.dir/depend
 	$(MAKE) -f CMakeFiles/itkBullseyeLib.dir/build.make CMakeFiles/itkBullseyeLib.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/kwerys/Code/itkBullseye/cmake-build-debug/CMakeFiles --progress-num=4 "Built target itkBullseyeLib"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/kwerys/Code/itkBullseye/cmake-build-debug/CMakeFiles --progress-num=4,5 "Built target itkBullseyeLib"
 .PHONY : CMakeFiles/itkBullseyeLib.dir/all
 
 # Include target in all.
@@ -76,7 +76,7 @@ all: CMakeFiles/itkBullseyeLib.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/itkBullseyeLib.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/kwerys/Code/itkBullseye/cmake-build-debug/CMakeFiles 1
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/kwerys/Code/itkBullseye/cmake-build-debug/CMakeFiles 2
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/itkBullseyeLib.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/kwerys/Code/itkBullseye/cmake-build-debug/CMakeFiles 0
 .PHONY : CMakeFiles/itkBullseyeLib.dir/rule
@@ -124,7 +124,7 @@ tests/CMakeFiles/itkBullseyeTests.dir/all: CMakeFiles/itkBullseyeLib.dir/all
 tests/CMakeFiles/itkBullseyeTests.dir/all: tests/CMakeFiles/gtest.dir/all
 	$(MAKE) -f tests/CMakeFiles/itkBullseyeTests.dir/build.make tests/CMakeFiles/itkBullseyeTests.dir/depend
 	$(MAKE) -f tests/CMakeFiles/itkBullseyeTests.dir/build.make tests/CMakeFiles/itkBullseyeTests.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/kwerys/Code/itkBullseye/cmake-build-debug/CMakeFiles --progress-num=5,6 "Built target itkBullseyeTests"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/kwerys/Code/itkBullseye/cmake-build-debug/CMakeFiles --progress-num=6,7 "Built target itkBullseyeTests"
 .PHONY : tests/CMakeFiles/itkBullseyeTests.dir/all
 
 # Include target in all.
@@ -134,7 +134,7 @@ all: tests/CMakeFiles/itkBullseyeTests.dir/all
 
 # Build rule for subdir invocation for target.
 tests/CMakeFiles/itkBullseyeTests.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/kwerys/Code/itkBullseye/cmake-build-debug/CMakeFiles 6
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/kwerys/Code/itkBullseye/cmake-build-debug/CMakeFiles 7
 	$(MAKE) -f CMakeFiles/Makefile2 tests/CMakeFiles/itkBullseyeTests.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/kwerys/Code/itkBullseye/cmake-build-debug/CMakeFiles 0
 .PHONY : tests/CMakeFiles/itkBullseyeTests.dir/rule

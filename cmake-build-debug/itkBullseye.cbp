@@ -220,6 +220,12 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/Users/kwerys/Code/itkBullseye/src/itkBullseyeApi.cpp">
+			<Option target="itkBullseyeLib"/>
+		</Unit>
+		<Unit filename="/Users/kwerys/Code/itkBullseye/src/itkBullseyeApi.h">
+			<Option target="itkBullseyeLib"/>
+		</Unit>
 		<Unit filename="/Users/kwerys/Code/itkBullseye/src/itkBullseyeFilter.h">
 			<Option target="itkBullseyeLib"/>
 		</Unit>

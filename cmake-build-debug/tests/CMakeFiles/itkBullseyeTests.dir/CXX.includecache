@@ -6,6 +6,10 @@
 
 #IncludeRegexTransform: 
 
+../src/itkBullseyeApi.h
+itkbullseyelib_export.h
+../src/itkbullseyelib_export.h
+
 ../src/itkDummyFilter.h
 itkImageToImageFilter.h
 ../src/itkImageToImageFilter.h
@@ -319,6 +323,8 @@ gtest/gtest.h
 /Users/kwerys/Code/itkBullseye/tests/gtest/gtest.h
 itkDummyFilter.h
 /Users/kwerys/Code/itkBullseye/tests/itkDummyFilter.h
+itkBullseyeApi.h
+/Users/kwerys/Code/itkBullseye/tests/itkBullseyeApi.h
 
 /usr/local/include/ITK-4.12/ITKCommonExport.h
 
