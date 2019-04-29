@@ -81,6 +81,6 @@ deploy:
     configuration: Release
 
 notifications:
-- provider: Slack
-  incoming_webhook:
-    secure: Sulkkyq57PP9HQWoRZKZJpw+XELOyFf6DElq7gZrTZQTLWg3rYUIHpnrI1FU9QJhyt/BmO5DgBHqWuIWmiKLAMqyetmET4KsdI43gvgGU0Q=
+  provider: Slack
+    incoming_webhook:
+      secure: Sulkkyq57PP9HQWoRZKZJpw+XELOyFf6DElq7gZrTZQTLWg3rYUIHpnrI1FU9QJhyt/BmO5DgBHqWuIWmiKLAMqyetmET4KsdI43gvgGU0Q=

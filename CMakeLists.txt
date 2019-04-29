@@ -22,5 +22,7 @@ target_link_libraries (itkBullseyeLib PUBLIC ${ITK_LIBRARIES})
 include(GenerateExportHeader)
 generate_export_header(itkBullseyeLib)
 
+install (TARGETS itkBullseyeLib DESTINATION .)
+
 add_subdirectory(tests)
 
