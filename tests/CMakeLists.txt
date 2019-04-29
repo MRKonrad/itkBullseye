@@ -7,11 +7,12 @@ find_package(Threads REQUIRED)
 target_link_libraries(gtest ${CMAKE_THREAD_LIBS_INIT})
 
 # Test executable
-file(GLOB_RECURSE TESTS_FILES ${PROJECT_SOURCE_DIR}/tests/*.c* ${PROJECT_SOURCE_DIR}/tests/*.h* ${PROJECT_SOURCE_DIR}/tests/*.t*)
+file(GLOB_RECURSE TESTS_FILES ${PROJECT_SOURCE_DIR}/tests/*.c*)
+
+message(STATUS ${TESTS_FILES} )
 
 add_executable(itkBullseyeTests ${TESTS_FILES})
 target_link_libraries(itkBullseyeTests PUBLIC gtest)
-target_link_libraries(itkBullseyeTests PUBLIC itkBullseyeLibStatic)
 
 if(WIN32)
   target_link_libraries(itkBullseyeTests PUBLIC itkBullseyeLibStatic)

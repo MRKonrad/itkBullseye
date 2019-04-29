@@ -8,8 +8,3 @@
 void dummyFunction(){
     std::cout << "Hello Api world" << std::endl;
 }
-
-int main(){
-    dummyFunction();
-    return 0;
-}
