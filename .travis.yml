@@ -51,5 +51,5 @@ deploy:
     condition: ${CXX} == "g++" # I guess I have to pick one compiler
 
 notifications:
-  slack: ${SLACK_SECURE}
+  slack: mrheart:${SLACK_TOKEN}
   on_success: always
