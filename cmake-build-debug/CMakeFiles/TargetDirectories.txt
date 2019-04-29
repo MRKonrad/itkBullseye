@@ -1,0 +1,7 @@
+/Users/kwerys/Code/itkBullseye/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/kwerys/Code/itkBullseye/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/kwerys/Code/itkBullseye/cmake-build-debug/CMakeFiles/itkBullseyeLib.dir
+/Users/kwerys/Code/itkBullseye/cmake-build-debug/tests/CMakeFiles/rebuild_cache.dir
+/Users/kwerys/Code/itkBullseye/cmake-build-debug/tests/CMakeFiles/edit_cache.dir
+/Users/kwerys/Code/itkBullseye/cmake-build-debug/tests/CMakeFiles/itkBullseyeTests.dir
+/Users/kwerys/Code/itkBullseye/cmake-build-debug/tests/CMakeFiles/gtest.dir

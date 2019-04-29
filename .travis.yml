@@ -1,0 +1,54 @@
+language: cpp
+
+os:
+  - linux
+  - osx
+
+compiler:
+#  - gcc
+  - clang
+
+env:
+  global:
+    - exe_extended_name: itkBullseye_${TRAVIS_BRANCH}_${TRAVIS_OS_NAME}
+    - secure: ${GH_PERSONAL_ACCESS_TOKEN}
+
+install:
+  # download ITK
+  - cd ${TRAVIS_BUILD_DIR}
+  - cd ..
+  - curl -L -O http://mrkonrad.github.io/MRKonrad/files/ITK_built/ITK413_${TRAVIS_OS_NAME}_install.zip
+  - unzip -a -q ITK413_$TRAVIS_OS_NAME_install.zip
+  - cd ${TRAVIS_BUILD_DIR}
+
+script:
+  - cd ${TRAVIS_BUILD_DIR}
+  - cmake . -Bbin -DITK_DIR_HINTS="../ITK_install" -DCMAKE_INSTALL_PREFIX=${TRAVIS_BUILD_DIR}/bin/install
+  - cmake --build bin --config RELEASE --target itkBullseyeTests
+  - cd bin/tests
+  - ./itkBullseyeTests
+
+before_deploy:
+  - cd ${TRAVIS_BUILD_DIR}
+  - cmake --build bin --config RELEASE --target install
+  - cd ${TRAVIS_BUILD_DIR}/bin/install
+  - zip -r ${exe_extended_name}.zip *
+  - cd ${TRAVIS_BUILD_DIR}
+  - mkdir deployment
+  - cp ${TRAVIS_BUILD_DIR}/bin/install/${exe_extended_name}.zip ${TRAVIS_BUILD_DIR}/deployment/${exe_extended_name}.zip
+  - ls ${TRAVIS_BUILD_DIR}
+  - ls ${TRAVIS_BUILD_DIR}/deployment
+
+deploy:
+  provider: releases # GitHub
+  api_key:
+    secure: ${GH_PERSONAL_ACCESS_TOKEN}
+  file_glob: ON # to use wildcards
+  file: deployment/*
+  skip_cleanup: ON
+  on:
+    tags: ON
+    condition: ${CXX} == "g++" # I guess I have to pick one compiler
+
+notifications:
+  webhooks: ${slack_webhook}
