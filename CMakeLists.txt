@@ -3,6 +3,9 @@ cmake_minimum_required(VERSION 3.6)
 project(itkBullseye)
 
 set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_INSTALL_RPATH "@executable_path")
 
 find_package(ITK REQUIRED HINTS ${ITK_DIR_HINTS})
 include(${ITK_USE_FILE})
