@@ -18,7 +18,7 @@ install:
   - cd ${TRAVIS_BUILD_DIR}
   - cd ..
   - curl -L -O http://mrkonrad.github.io/MRKonrad/files/ITK_built/ITK413_${TRAVIS_OS_NAME}_install.zip
-  - unzip -a -q ITK413_$TRAVIS_OS_NAME_install.zip
+  - unzip -a -q ITK413_${TRAVIS_OS_NAME}_install.zip
   - cd ${TRAVIS_BUILD_DIR}
 
 script:
