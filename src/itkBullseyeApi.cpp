@@ -5,6 +5,6 @@
 #include "itkBullseyeApi.h"
 #include <iostream>
 
-ITKBULLSEYELIB_EXPORT void dummyFunction(){
+void dummyFunction(){
     std::cout << "Hello Api world" << std::endl;
 }

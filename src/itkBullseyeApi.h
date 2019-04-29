@@ -7,7 +7,7 @@
 
 #include "itkbullseyelib_export.h"
 
-void dummyFunction();
+ITKBULLSEYELIB_EXPORT void dummyFunction();
 
 int main(){
     return 0;
