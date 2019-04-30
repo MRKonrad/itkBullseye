@@ -6,6 +6,7 @@
 #define ITKBULLSEYE_ITKDUMMYFILTER_H
 
 #include "itkImageToImageFilter.h"
+#include "itkbullseyelib_export.h"
 
 namespace itk
 {
@@ -45,9 +46,9 @@ namespace itk
 } //namespace ITK
 
 #ifndef ITK_MANUAL_INSTANTIATION
-//#ifdef ITKBULLSEYELIB_EXPORT
+#ifdef ITKBULLSEYELIB_EXPORT
 #include "itkDummyFilter.hxx"
-//#endif // ITKBULLSEYELIB_EXPORT
+#endif // ITKBULLSEYELIB_EXPORT
 #endif // ITK_MANUAL_INSTANTIATION
 
 #endif //ITKBULLSEYE_ITKDUMMYFILTER_H

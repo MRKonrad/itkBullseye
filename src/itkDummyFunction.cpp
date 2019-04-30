@@ -3,6 +3,7 @@
 //
 
 #include "itkDummyFunction.h"
+#include <iostream>
 
 void dummyFunction(){
     std::cout << "Hello Api world" << std::endl;
