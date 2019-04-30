@@ -21,11 +21,12 @@ add_library(itkBullseyeLibStatic STATIC ${SRC_FILES})
 include_directories(${CMAKE_SOURCE_DIR}/src)
 include_directories(${PROJECT_BINARY_DIR})
 target_link_libraries (itkBullseyeLib PUBLIC ${ITK_LIBRARIES})
+target_link_libraries (itkBullseyeLibStatic PUBLIC ${ITK_LIBRARIES})
 
 include(GenerateExportHeader)
 generate_export_header(itkBullseyeLib)
+set_target_properties(itkBullseyeLibStatic PROPERTIES COMPILE_FLAGS -DITKBULLSEYELIB_STATIC_DEFINE)
 
 install (TARGETS itkBullseyeLib DESTINATION .)
 
 add_subdirectory(tests)
-

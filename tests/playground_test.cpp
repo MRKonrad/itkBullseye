@@ -5,8 +5,7 @@
 #include "gtest/gtest.h"
 
 #include "itkDummyFilter.h"
-#include "itkBullseyeApi.h"
-
+#include "itkDummyFunction.h"
 
 TEST(playground, DummyFilter_test) {
 

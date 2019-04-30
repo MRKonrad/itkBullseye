@@ -5,8 +5,6 @@
 #ifndef ITKBULLSEYE_ITKDUMMYFILTER_HXX
 #define ITKBULLSEYE_ITKDUMMYFILTER_HXX
 
-#include "itkDummyFilter.h"
-
 #include "itkObjectFactory.h"
 #include "itkImageRegionIterator.h"
 #include "itkImageRegionConstIterator.h"

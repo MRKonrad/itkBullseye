@@ -6,8 +6,8 @@
 #define ITKBULLSEYE_ITKBULLSEYEAPI_H
 
 #include "itkbullseyelib_export.h"
+#include "itkDummyFilter.h"
 
 ITKBULLSEYELIB_EXPORT void dummyFunction();
-void dummyFunction();
 
 #endif //ITKBULLSEYE_ITKBULLSEYEAPI_H
