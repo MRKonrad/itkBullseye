@@ -22,19 +22,12 @@ configuration:
 before_build:
   - echo %PLATFORM%
   - echo %configuration%
-  - dir
-  - cd
-  - cd ..
-  - cd
+  - cd %APPVEYOR_BUILD_FOLDER%\..
   - curl -L -O http://mrkonrad.github.io/MRKonrad/files/ITK_built/ITK412_win_%PLATFORM%_install.zip
-  - dir
-  - cd
   - 7z x -r ITK412_win_%PLATFORM%_install.zip
   - dir
-  - cd itkBullseye
-  - cd
-  - dir
-  - cmake . -Bbin -A%PLATFORM% -DCMAKE_INSTALL_PREFIX=install -DITK_DIR_HINTS="../ITK_install"
+  - cd %APPVEYOR_BUILD_FOLDER%
+  - cmake . -Bbin -A%PLATFORM% -DCMAKE_INSTALL_PREFIX=install -DITK_DIR_HINTS="../ITK_install" -T v90
 
 build:
   project: bin\itkBullseye.sln  # path to Visual Studio solution or project
