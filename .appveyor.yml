@@ -14,7 +14,7 @@ environment:
 install:
   - git submodule update --init --recursive
   - cd %APPVEYOR_BUILD_FOLDER%\thirdParty\googletest
-  - git checkout -b release-1.4.0 origin\release-1.4.0
+  - git checkout tags/release-1.4.0
 
 platform:
   - Win32
