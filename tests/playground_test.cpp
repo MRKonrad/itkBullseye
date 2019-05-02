@@ -46,11 +46,11 @@ TEST(playground, PipelineRunner_test) {
     pipelineRunner.setNInputCols(nCols);
     pipelineRunner.setNInputRows(nRows);
     pipelineRunner.setNInputImages(nImages);
-    pipelineRunner.setInputVolumePointer(input.data());
+    pipelineRunner.setInputVolumePointer(&input[0]);
     pipelineRunner.setNOutputCols(nCols);
     pipelineRunner.setNOutputRows(nRows);
     pipelineRunner.setNOutputImages(nImages);
-    pipelineRunner.setOutputVolumePointer(output.data());
+    pipelineRunner.setOutputVolumePointer(&output[0]]);
 
     EXPECT_NO_THROW(pipelineRunner.run());
     EXPECT_EQ(output[0], testValue);

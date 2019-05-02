@@ -5,9 +5,8 @@
 #ifndef ITKBULLSEYE_ITKBULLSEYEAPI_H
 #define ITKBULLSEYE_ITKBULLSEYEAPI_H
 
-#include <cmath>
 #include "itkbullseyelib_export.h"
-// #include "PipelineRunner.h"
+#include "PipelineRunner.h"
 
 // template class ITKBULLSEYELIB_EXPORT PipelineRunner<std::int8_t>;
 // template class ITKBULLSEYELIB_EXPORT PipelineRunner<std::int16_t>;
@@ -18,7 +17,11 @@
 // template class ITKBULLSEYELIB_EXPORT PipelineRunner<std::uint32_t>;
 // template class ITKBULLSEYELIB_EXPORT PipelineRunner<std::uint64_t>;
 // template class ITKBULLSEYELIB_EXPORT PipelineRunner<std::float_t>;
-// template class ITKBULLSEYELIB_EXPORT PipelineRunner<std::double_t>;
+
+template class ITKBULLSEYELIB_EXPORT PipelineRunner<short>;
+template class ITKBULLSEYELIB_EXPORT PipelineRunner<int>;
+template class ITKBULLSEYELIB_EXPORT PipelineRunner<float>;
+template class ITKBULLSEYELIB_EXPORT PipelineRunner<double>;
 
 ITKBULLSEYELIB_EXPORT void dummyFunction();
 
