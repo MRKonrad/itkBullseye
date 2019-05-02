@@ -7,14 +7,15 @@ init:
   - ps: Update-AppveyorBuild -Version "$($env:APPVEYOR_REPO_BRANCH) - $($env:APPVEYOR_REPO_COMMIT)"
 
 environment:
-  ZIP_EXTENDED_NAME: itkBullseye_%APPVEYOR_REPO_TAG_NAME%_windows_%PLATFORM%
+  toolset: v90
+  zip_name: itkBullseye_%APPVEYOR_REPO_TAG_NAME%_windows_%PLATFORM%_%toolset%
 
 install:
   - git submodule update --init --recursive
 
 platform:
   - Win32
-  - x64
+  # - x64
 
 configuration:
   - Release
@@ -23,11 +24,16 @@ before_build:
   - echo %PLATFORM%
   - echo %configuration%
   - cd %APPVEYOR_BUILD_FOLDER%\..
-  - curl -L -O http://mrkonrad.github.io/MRKonrad/files/ITK_built/ITK412_win_%PLATFORM%_install.zip
-  - 7z x -r ITK412_win_%PLATFORM%_install.zip
+  - if %PLATFORM% == "x64" (
+      curl http://mrkonrad.github.io/MRKonrad/files/ITK_built/ITK412_win_%PLATFORM%_install.zip -o itk_install.zip
+    )
+  - if %PLATFORM% == "Win32" (
+      curl https://github.com/MRKonrad/build-itk/releases/download/1.0.4/itk_v4.13.2_windows_Win32_v90.zip -o itk_install.zip
+    )
+  - 7z x -r itk_install.zip
   - dir
   - cd %APPVEYOR_BUILD_FOLDER%
-  - cmake . -Bbin -A%PLATFORM% -DCMAKE_INSTALL_PREFIX=install -DITK_DIR_HINTS="../ITK_install" -T v90
+  - cmake . -Bbin -A%PLATFORM% -DCMAKE_INSTALL_PREFIX=install -DITK_DIR_HINTS="../ITK_install" -T%toolset%
 
 build:
   project: bin\itkBullseye.sln  # path to Visual Studio solution or project
@@ -44,15 +50,14 @@ after_build:
   - cd ..
   - dir install
   - cd install
-  - 7z a %ZIP_EXTENDED_NAME%.zip * -r # zip
+  - 7z a %zip_name%.zip * -r # zip
   - cd ..
   - mkdir deployment
-  - copy install\%ZIP_EXTENDED_NAME%.zip deployment\%ZIP_EXTENDED_NAME%.zip
+  - copy install\%zip_name%.zip deployment\%zip_name%.zip
   - dir
   - dir deployment
 
 test_script:
-  # TODO: should I add sth like this? https://github.com/mgerhardy/caveexpress/blob/master/appveyor.yml
   - cd
   - dir
   - cd bin\tests\%CONFIGURATION%

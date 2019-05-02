@@ -5,7 +5,7 @@ Create a dicom image with a bullseye
 * http://dicom.nema.org/dicom/2013/output/chtml/part03/sect_C.9.html
 * http://dicom.nema.org/medical/dicom/2017d/output/chtml/part03/sect_C.9.2.html
 
-| System   |      Badge      |
+| System   |     Status      |
 |----------|:---------------:|
 | [OSX/Linux build - Travis][travis_link]   | [![Travis (.org)][travis_badge]][travis_link]                      |
 | [Windows build - AppVeyor][appveyor_link] | [![AppVeyor][appveyor_badge]][appveyor_link]                       |
