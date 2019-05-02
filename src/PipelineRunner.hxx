@@ -12,8 +12,8 @@ PipelineRunner<InputPixelType, OutputPixelType>::PipelineRunner()
         , nOutputRows(0)
         , nOutputCols(0)
         , nOutputImages(0)
-        , inputVolumePointer(nullptr)
-        , outputVolumePointer(nullptr) {
+        , inputVolumePointer(0)
+        , outputVolumePointer(0) {
 
 }
 
