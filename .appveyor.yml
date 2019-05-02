@@ -24,10 +24,10 @@ before_build:
   - echo %PLATFORM%
   - echo %configuration%
   - cd %APPVEYOR_BUILD_FOLDER%\..
-  - if %PLATFORM% == "x64" (
+  - if "%PLATFORM%" == "x64" (
       curl -L http://mrkonrad.github.io/MRKonrad/files/ITK_built/ITK412_win_%PLATFORM%_install.zip -o itk_install.zip
     )
-  - if %PLATFORM% == "Win32" (
+  - if "%PLATFORM%" == "Win32" (
       curl -L https://github.com/MRKonrad/build-itk/releases/download/1.0.4/itk_v4.13.2_windows_Win32_v90.zip -o itk_install.zip
     )
   - 7z x -r itk_install.zip
