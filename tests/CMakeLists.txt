@@ -1,31 +1,35 @@
-include(${PROJECT_SOURCE_DIR}/cmake/gtest.cmake)
+if(itkBullseye_BUILD_TESTING)
 
-enable_testing()
+  include(${PROJECT_SOURCE_DIR}/cmake/gtest.cmake)
 
-# Threads are needed for testing
-find_package(Threads REQUIRED)
-target_link_libraries(gtest ${CMAKE_THREAD_LIBS_INIT})
+  enable_testing()
 
-# Test executable
-file(GLOB_RECURSE TESTS_FILES ${PROJECT_SOURCE_DIR}/tests/*.c*)
+  # Threads are needed for testing
+  find_package(Threads REQUIRED)
+  target_link_libraries(gtest ${CMAKE_THREAD_LIBS_INIT})
 
-message(STATUS ${TESTS_FILES} )
+  # Test executable
+  file(GLOB_RECURSE TESTS_FILES ${PROJECT_SOURCE_DIR}/tests/*.c*)
 
-add_executable(itkBullseyeTests ${TESTS_FILES})
-target_link_libraries(itkBullseyeTests PUBLIC gtest)
+  message(STATUS ${TESTS_FILES} )
 
-if(WIN32)
-  target_link_libraries(itkBullseyeTests PUBLIC itkBullseyeLibStatic)
-  target_link_libraries(itkBullseyeTests PUBLIC ${ITK_LIBRARIES})
-else()
-  target_link_libraries(itkBullseyeTests PUBLIC itkBullseyeLib)
-endif()
+  add_executable(itkBullseyeTests ${TESTS_FILES})
+  target_link_libraries(itkBullseyeTests PUBLIC gtest)
 
-#set_target_properties(itkBullseyeTests PROPERTIES COMPILE_FLAGS -DitkBullseye_EXPORTS) # to see hxx content
+  if(WIN32)
+    target_link_libraries(itkBullseyeTests PUBLIC itkBullseyeLibStatic)
+    target_link_libraries(itkBullseyeTests PUBLIC ${ITK_LIBRARIES})
+  else()
+    target_link_libraries(itkBullseyeTests PUBLIC itkBullseyeLib)
+  endif()
 
-add_test(NAME ctest_tests COMMAND itkBullseyeTests)
+  #set_target_properties(itkBullseyeTests PROPERTIES COMPILE_FLAGS -DitkBullseye_EXPORTS) # to see hxx content
 
-if(WIN32)
-  file(COPY testData DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
-  file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/testData/temp)
-endif()
+  add_test(NAME ctest_tests COMMAND itkBullseyeTests)
+
+  if(WIN32)
+    file(COPY testData DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+    file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/testData/temp)
+  endif()
+
+endif(itkBullseye_BUILD_TESTING)

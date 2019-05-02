@@ -29,4 +29,5 @@ set_target_properties(itkBullseyeLibStatic PROPERTIES COMPILE_FLAGS -DITKBULLSEY
 
 install (TARGETS itkBullseyeLib DESTINATION .)
 
+set(itkBullseye_BUILD_TESTING ON CACHE BOOL "Do you want to build itkBullseye tests?")
 add_subdirectory(tests)

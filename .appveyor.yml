@@ -37,7 +37,7 @@ before_build:
     )
   - dir
   - cd %APPVEYOR_BUILD_FOLDER%
-  - cmake . -Bbin -A%PLATFORM% -DCMAKE_INSTALL_PREFIX=install -DITK_DIR_HINTS="../ITK_install" -T%toolset%
+  - cmake . -Bbin -A%PLATFORM% -T%toolset% -DCMAKE_INSTALL_PREFIX=install -DITK_DIR_HINTS="../ITK_install" -DitkBullseye_BUILD_TESTING=OFF
 
 build:
   project: bin\itkBullseye.sln  # path to Visual Studio solution or project
