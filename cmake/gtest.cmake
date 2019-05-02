@@ -6,6 +6,8 @@ if(EXISTS ${PROJECT_SOURCE_DIR}/thirdParty/googletest/src/gtest_main.cc)
   set(GOOGLETEST_ROOT thirdParty/googletest)
 endif()
 
+MESSAGE(STATUS ${GOOGLETEST_ROOT})
+
 include_directories(SYSTEM
         ${PROJECT_SOURCE_DIR}/${GOOGLETEST_ROOT}
         ${PROJECT_SOURCE_DIR}/${GOOGLETEST_ROOT}/include
