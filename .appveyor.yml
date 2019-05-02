@@ -9,6 +9,7 @@ init:
 environment:
   toolset: v90
   zip_name: itkBullseye_%APPVEYOR_REPO_TAG_NAME%_windows_%PLATFORM%_%toolset%
+  testing: OFF
 
 install:
   - git submodule update --init --recursive
@@ -37,7 +38,7 @@ before_build:
     )
   - dir
   - cd %APPVEYOR_BUILD_FOLDER%
-  - cmake . -Bbin -A%PLATFORM% -T%toolset% -DCMAKE_INSTALL_PREFIX=install -DITK_DIR_HINTS="../ITK_install" -DitkBullseye_BUILD_TESTING=OFF
+  - cmake . -Bbin -A%PLATFORM% -T%toolset% -DCMAKE_INSTALL_PREFIX=install -DITK_DIR_HINTS="../ITK_install" -DitkBullseye_BUILD_TESTING=%testing%
 
 build:
   project: bin\itkBullseye.sln  # path to Visual Studio solution or project
@@ -48,7 +49,6 @@ after_build:
   # install the files
   - cd %APPVEYOR_BUILD_FOLDER%\bin
   - dir
-  # - cmake --build . --config %CONFIGURATION% --target ALL_BUILD
   - cmake --build . --config %CONFIGURATION% --target INSTALL
   - dir %CONFIGURATION%
   - cd ..
@@ -62,11 +62,10 @@ after_build:
   - dir deployment
 
 test_script:
-  - cd
-  - dir
-  - cd bin\tests\%CONFIGURATION%
-  - itkBullseyeTests.exe
-  - cd %APPVEYOR_BUILD_FOLDER%
+  - if "%testing%" == "ON" (
+      cd %APPVEYOR_BUILD_FOLDER%\bin\tests\%CONFIGURATION% &&
+      itkBullseyeTests.exe
+    )
 
 artifacts:
   - path: deployment\*.*
