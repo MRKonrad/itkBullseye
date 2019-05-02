@@ -6,7 +6,7 @@
 #define ITKBULLSEYE_ITKBULLSEYEAPI_H
 
 #include <cmath>
-// #include "itkbullseyelib_export.h"
+#include "itkbullseyelib_export.h"
 // #include "PipelineRunner.h"
 
 // template class ITKBULLSEYELIB_EXPORT PipelineRunner<std::int8_t>;
