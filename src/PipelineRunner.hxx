@@ -2,7 +2,7 @@
 // Created by Konrad Werys on 30/04/2019.
 //
 
-
+#include "itkSobelEdgeDetectionImageFilter.h"
 
 template<typename InputPixelType, typename OutputPixelType>
 PipelineRunner<InputPixelType, OutputPixelType>::PipelineRunner()
@@ -17,6 +17,11 @@ PipelineRunner<InputPixelType, OutputPixelType>::PipelineRunner()
 
 }
 
+template<typename InputPixelType, typename OutputPixelType>
+PipelineRunner<InputPixelType, OutputPixelType>::~PipelineRunner() {
+    delete [] outputVolumePointer;
+}
+
 template< typename InputPixelType, typename OutputPixelType>
 int
 PipelineRunner<InputPixelType, OutputPixelType>
@@ -29,20 +34,58 @@ PipelineRunner<InputPixelType, OutputPixelType>
         return 1; // EXIT_FAILURE
     }
 
-    if (!outputVolumePointer){
-        std::cerr << "outputVolumePointer is null" << std::endl;
-        return 1; // EXIT_FAILURE
-    }
+//    if (!outputVolumePointer){
+//        std::cerr << "outputVolumePointer is null" << std::endl;
+//        return 1; // EXIT_FAILURE
+//    }
 
 
     // TODO: change it!!!
-    if (nInputCols * nInputRows * nInputImages != nOutputCols * nOutputRows * nOutputImages){
-        std::cerr << "nInputCols * nInputRows * nInputImages != nOutputCols * nOutputRows * nOutputImages" << std::endl;
-        return 1; // EXIT_FAILURE
+//    if (nInputCols * nInputRows * nInputImages != nOutputCols * nOutputRows * nOutputImages){
+//        std::cerr << "nInputCols * nInputRows * nInputImages != nOutputCols * nOutputRows * nOutputImages" << std::endl;
+//        return 1; // EXIT_FAILURE
+//    }
+//
+//    for (size_t i = 0; i < nInputCols * nInputRows * nInputImages; ++i){
+//        outputVolumePointer[nInputCols * nInputRows * nInputImages - 1 - i] = static_cast<OutputPixelType>(inputVolumePointer[i]);
+//    }
+
+    typedef itk::Image<InputPixelType, 3> InputImageType;
+    typedef itk::Image<OutputPixelType, 3> OutputImageType;
+
+    typename InputImageType::Pointer inputImage = InputImageType::New();
+    itk::Index<3> start;
+    start.Fill(0);
+
+    itk::Size<3> inputSize;
+    inputSize[0] = nInputCols;
+    inputSize[1] = nInputRows;
+    inputSize[2] = nInputImages;
+
+    itk::ImageRegion<3> region(start, inputSize);
+    inputImage->SetRegions(region);
+    inputImage->Allocate();
+
+    for (int i = 0; i < nInputRows * nInputCols * nInputImages; ++i){
+        inputImage->GetBufferPointer()[i] = inputVolumePointer[i];
     }
 
-    for (size_t i = 0; i < nInputCols * nInputRows * nInputImages; ++i){
-        outputVolumePointer[nInputCols * nInputRows * nInputImages - 1 - i] = static_cast<OutputPixelType>(inputVolumePointer[i]);
+    typedef itk::SobelEdgeDetectionImageFilter <InputImageType, OutputImageType> SobelEdgeDetectionImageFilterType;
+    typename SobelEdgeDetectionImageFilterType::Pointer sobelFilter = SobelEdgeDetectionImageFilterType::New();
+    sobelFilter->SetInput(inputImage);
+    sobelFilter->Update();
+
+    typename OutputImageType::Pointer outputImage = sobelFilter->GetOutput();
+    itk::Size<3> outputSize = outputImage->GetLargestPossibleRegion().GetSize();
+
+    nOutputCols = outputSize[0];
+    nOutputRows = outputSize[1];
+    nOutputImages = outputSize[2];
+
+    outputVolumePointer = new OutputPixelType[nOutputRows*nOutputCols*nOutputImages];
+
+    for (int i = 0; i < nInputRows * nInputCols * nInputImages; ++i){
+        outputVolumePointer[i] = outputImage->GetBufferPointer()[i];
     }
 
     return 0; // EXIT_SUCCESS
@@ -132,7 +175,3 @@ void PipelineRunner<InputPixelType, OutputPixelType>::setOutputVolumePointer(Out
     PipelineRunner::outputVolumePointer = outputVolumePointer;
 }
 
-template<typename InputPixelType, typename OutputPixelType>
-PipelineRunner<InputPixelType, OutputPixelType>::~PipelineRunner() {
-
-}

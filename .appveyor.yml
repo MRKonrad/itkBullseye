@@ -9,7 +9,6 @@ init:
 environment:
   toolset: v90
   zip_name: itkBullseye_%APPVEYOR_REPO_TAG_NAME%_windows_%PLATFORM%_%toolset%
-  testing: ON
 
 install:
   - git submodule update --init --recursive
@@ -18,7 +17,7 @@ install:
 
 platform:
   - Win32
-  # - x64
+  - x64
 
 configuration:
   - Release
@@ -27,20 +26,12 @@ before_build:
   - echo %PLATFORM%
   - echo %configuration%
   - cd %APPVEYOR_BUILD_FOLDER%\..
-  - if "%PLATFORM%" == "x64" (
-      curl -L http://mrkonrad.github.io/MRKonrad/files/ITK_built/ITK412_win_%PLATFORM%_install.zip -o itk_install.zip &&
-      7z x -r itk_install.zip
-    )
-  - if "%PLATFORM%" == "Win32" (
-      mkdir ITK_install &&
-      cd ITK_install &&
-      curl -L https://github.com/MRKonrad/build-itk/releases/download/1.0.4/itk_v4.13.2_windows_Win32_v90.zip -o itk_install.zip &&
-      7z x -r itk_install.zip &&
-      cd ..
-    )
-  - dir
+  - mkdir ITK_install
+  - cd ITK_install
+  - curl -L https://github.com/MRKonrad/build-itk/releases/download/itk_v4.13.2/itk_v4.13.2_windows_%PLATFORM%_%toolset%.zip -o itk_install.zip
+  - 7z x -r itk_install.zip
   - cd %APPVEYOR_BUILD_FOLDER%
-  - cmake . -Bbin -A%PLATFORM% -T%toolset% -DCMAKE_INSTALL_PREFIX=install -DITK_DIR_HINTS="../ITK_install" -DitkBullseye_BUILD_TESTING=%testing%
+  - cmake . -Bbin -A%PLATFORM% -T%toolset% -DCMAKE_INSTALL_PREFIX=install -DITK_DIR_HINTS="../ITK_install"
 
 build:
   project: bin\itkBullseye.sln  # path to Visual Studio solution or project
@@ -64,10 +55,8 @@ after_build:
   - dir deployment
 
 test_script:
-  - if "%testing%" == "ON" (
-      cd %APPVEYOR_BUILD_FOLDER%\bin\tests\%CONFIGURATION% &&
-      itkBullseyeTests.exe
-    )
+  - cd %APPVEYOR_BUILD_FOLDER%\bin\tests\%CONFIGURATION%
+  - itkBullseyeTests.exe
 
 artifacts:
   - path: deployment\*.*
