@@ -45,8 +45,8 @@ private:
 };
 
 
-#ifdef ITKBULLSEYELIB_EXPORT
+#ifdef ITKBULLSEYELIB_EXPORTS
 #include "KWImage.hxx"
-#endif // ITKBULLSEYELIB_EXPORT
+#endif // ITKBULLSEYELIB_EXPORTS
 
 #endif //ITKBULLSEYE_KWIMAGE_H

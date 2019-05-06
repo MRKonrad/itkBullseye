@@ -37,8 +37,8 @@ private:
 };
 
 
-#ifdef ITKBULLSEYELIB_EXPORT
+#ifdef ITKBULLSEYELIB_EXPORTS
 #include "PipelineRunner.hxx"
-#endif // ITKBULLSEYELIB_EXPORT
+#endif // ITKBULLSEYELIB_EXPORTS
 
 #endif //ITKBULLSEYE_PIPELINERUNNER_H
