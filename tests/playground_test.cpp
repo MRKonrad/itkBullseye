@@ -10,6 +10,7 @@
 
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
+#include "itkCastImageFilter.h"
 #include "itkFileTools.h"
 
 TEST(playground, DummyFilter_test) {
@@ -31,47 +32,17 @@ TEST(playground, itkBullseyeApi_test) {
 
 }
 
-//TEST(playground, PipelineRunner_test) {
-//
-//    typedef float TYPE;
-//
-//    TYPE zeroValue = 10;
-//    TYPE testValue = 10;
-//
-//    size_t nCols = 10;
-//    size_t nRows = 10;
-//    size_t nImages = 1;
-//    std::vector<TYPE> input(nCols * nRows * nImages, zeroValue);
-//    std::vector<TYPE> output(nCols * nRows * nImages, zeroValue);
-//
-//    input[nCols * nRows * nImages - 1] = testValue;
-//
-//    PipelineRunner<TYPE> pipelineRunner;
-//    pipelineRunner.setNInputCols(nCols);
-//    pipelineRunner.setNInputRows(nRows);
-//    pipelineRunner.setNInputImages(nImages);
-//    pipelineRunner.setInputVolumePointer(&input[0]);
-//    pipelineRunner.setNOutputCols(nCols);
-//    pipelineRunner.setNOutputRows(nRows);
-//    pipelineRunner.setNOutputImages(nImages);
-//    pipelineRunner.setOutputVolumePointer(&output[0]);
-//
-//    EXPECT_NO_THROW(pipelineRunner.run());
-//    EXPECT_EQ(output[0], testValue);
-//    EXPECT_EQ(output[1], zeroValue);
-//
-//}
-
 TEST(playground, PipelineRunner_test) {
 
     std::string inputFilename = "../../tests/testData/dicom/T1Map.dcm";
     std::string outputFilename = "../../tests/testData/temp/PipelineRunner_test.dcm";
     itk::FileTools::CreateDirectory("../../tests/testData/temp");
 
-    typedef float TYPE;
+    typedef float InputPixelType;
+    typedef int OutputPixelType;
 
-    typedef itk::Image<TYPE, 3> InputImageType;
-    typedef itk::Image<int, 3> OutputImageType;
+    typedef itk::Image<InputPixelType, 3> InputImageType;
+    typedef itk::Image<OutputPixelType, 3> OutputImageType;
 
     typedef itk::ImageFileReader<InputImageType> ReaderType;
     ReaderType::Pointer reader = ReaderType::New();
@@ -80,35 +51,42 @@ TEST(playground, PipelineRunner_test) {
 
     itk::Size<3> inputSize = reader->GetOutput()->GetLargestPossibleRegion().GetSize();
 
-    PipelineRunner<TYPE> pipelineRunner;
-    pipelineRunner.setNInputCols(inputSize[0]);
-    pipelineRunner.setNInputRows(inputSize[1]);
-    pipelineRunner.setNInputImages(inputSize[2]);
-    pipelineRunner.setInputVolumePointer(reader->GetOutput()->GetBufferPointer());
+    PipelineRunner<InputPixelType, InputPixelType> pipelineRunner;
+    KWImage<InputPixelType> *kwInputImage = new KWImage<InputPixelType>;
+    std::vector<size_t> kwImputImageDims(3);
+    kwImputImageDims[0] = inputSize[0];
+    kwImputImageDims[1] = inputSize[1];
+    kwImputImageDims[2] = inputSize[2];
+    kwInputImage->setDims(kwImputImageDims);
+    kwInputImage->setBuffer(reader->GetOutput()->GetBufferPointer());
+    pipelineRunner.addInputImage(kwInputImage);
+
     EXPECT_NO_THROW(pipelineRunner.run());
 
-    OutputImageType::Pointer outputImage = OutputImageType::New();
+    InputImageType::Pointer outputImage = InputImageType::New();
 
     itk::Index<3> start;
     start.Fill(0);
 
     itk::Size<3> outputSize;
-    outputSize[0] = pipelineRunner.getNOutputCols();
-    outputSize[1] = pipelineRunner.getNOutputRows();
-    outputSize[2] = pipelineRunner.getNOutputImages();
+    outputSize[0] = pipelineRunner.getNthOutputImage(0)->getDims()[0];
+    outputSize[1] = pipelineRunner.getNthOutputImage(0)->getDims()[1];
+    outputSize[2] = pipelineRunner.getNthOutputImage(0)->getDims()[2];
 
     itk::ImageRegion<3> region(start, outputSize);
     outputImage->SetRegions(region);
     outputImage->Allocate();
 
-    for (int i = 0; i < outputSize[0] * outputSize[1] * outputSize[2]; ++i){
-        outputImage->GetBufferPointer()[i] = pipelineRunner.getOutputVolumePointer()[i];
-    }
+    pipelineRunner.getNthOutputImage(0)->copyToBuffer(outputImage->GetBufferPointer());
+
+    typedef itk::CastImageFilter<InputImageType, OutputImageType> CasterType;
+    CasterType::Pointer caster = CasterType::New();
+    caster->SetInput(outputImage);
 
     typedef itk::ImageFileWriter<OutputImageType> WriterType;
     WriterType::Pointer writer = WriterType::New();
     writer->SetFileName (outputFilename);
-    writer->SetInput(outputImage);
+    writer->SetInput(caster->GetOutput());
     writer->Update();
 
 }

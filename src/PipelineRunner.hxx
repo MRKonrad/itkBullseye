@@ -5,21 +5,20 @@
 #include "itkSobelEdgeDetectionImageFilter.h"
 
 template<typename InputPixelType, typename OutputPixelType>
-PipelineRunner<InputPixelType, OutputPixelType>::PipelineRunner()
-        : nInputCols(0)
-        , nInputRows(0)
-        , nInputImages(0)
-        , nOutputRows(0)
-        , nOutputCols(0)
-        , nOutputImages(0)
-        , inputVolumePointer(0)
-        , outputVolumePointer(0) {
+PipelineRunner<InputPixelType, OutputPixelType>::PipelineRunner() {
 
 }
 
 template<typename InputPixelType, typename OutputPixelType>
 PipelineRunner<InputPixelType, OutputPixelType>::~PipelineRunner() {
-    delete [] outputVolumePointer;
+
+    for (int i = 0; i < inputImages.size(); i++){
+        delete inputImages[i];
+    }
+
+    for (int i = 0; i < outputImages.size(); i++){
+        delete outputImages[i];
+    }
 }
 
 template< typename InputPixelType, typename OutputPixelType>
@@ -29,149 +28,88 @@ PipelineRunner<InputPixelType, OutputPixelType>
 
     std::cout << "PipeRunner::run" << std::endl;
 
-    if (!inputVolumePointer){
-        std::cerr << "inputVolumePointer is null" << std::endl;
-        return 1; // EXIT_FAILURE
-    }
+    for (int i = 0; i < inputImages.size(); i++) {
+        KWImage<InputPixelType> *kwInputImage = inputImages[i];
 
-//    if (!outputVolumePointer){
-//        std::cerr << "outputVolumePointer is null" << std::endl;
-//        return 1; // EXIT_FAILURE
-//    }
+        if (!kwInputImage->getBuffer()) {
+            std::cerr << "inputVolumePointer is null" << std::endl;
+            continue;
+        }
 
+        typedef itk::Image<InputPixelType, 3> InputImageType;
+        typedef itk::Image<OutputPixelType, 3> OutputImageType;
 
-    // TODO: change it!!!
-//    if (nInputCols * nInputRows * nInputImages != nOutputCols * nOutputRows * nOutputImages){
-//        std::cerr << "nInputCols * nInputRows * nInputImages != nOutputCols * nOutputRows * nOutputImages" << std::endl;
-//        return 1; // EXIT_FAILURE
-//    }
-//
-//    for (size_t i = 0; i < nInputCols * nInputRows * nInputImages; ++i){
-//        outputVolumePointer[nInputCols * nInputRows * nInputImages - 1 - i] = static_cast<OutputPixelType>(inputVolumePointer[i]);
-//    }
+        typename InputImageType::Pointer itkInputImage = InputImageType::New();
+        itk::Index<3> start;
+        start.Fill(0);
 
-    typedef itk::Image<InputPixelType, 3> InputImageType;
-    typedef itk::Image<OutputPixelType, 3> OutputImageType;
+        itk::Size<3> inputSize;
+        inputSize[0] = kwInputImage->getDims()[0];
+        inputSize[1] = kwInputImage->getDims()[1];
+        inputSize[2] = kwInputImage->getDims()[2];
 
-    typename InputImageType::Pointer inputImage = InputImageType::New();
-    itk::Index<3> start;
-    start.Fill(0);
+        itk::ImageRegion<3> region(start, inputSize);
+        itkInputImage->SetRegions(region);
+        itkInputImage->Allocate();
 
-    itk::Size<3> inputSize;
-    inputSize[0] = nInputCols;
-    inputSize[1] = nInputRows;
-    inputSize[2] = nInputImages;
+        kwInputImage->copyToBuffer(itkInputImage->GetBufferPointer());
 
-    itk::ImageRegion<3> region(start, inputSize);
-    inputImage->SetRegions(region);
-    inputImage->Allocate();
+        typedef itk::SobelEdgeDetectionImageFilter<InputImageType, OutputImageType> SobelEdgeDetectionImageFilterType;
+        typename SobelEdgeDetectionImageFilterType::Pointer sobelFilter = SobelEdgeDetectionImageFilterType::New();
+        sobelFilter->SetInput(itkInputImage);
+        sobelFilter->Update();
 
-    for (int i = 0; i < nInputRows * nInputCols * nInputImages; ++i){
-        inputImage->GetBufferPointer()[i] = inputVolumePointer[i];
-    }
+        typename OutputImageType::Pointer outputImage = sobelFilter->GetOutput();
+        itk::Size<3> itkOutputSize = outputImage->GetLargestPossibleRegion().GetSize();
 
-    typedef itk::SobelEdgeDetectionImageFilter <InputImageType, OutputImageType> SobelEdgeDetectionImageFilterType;
-    typename SobelEdgeDetectionImageFilterType::Pointer sobelFilter = SobelEdgeDetectionImageFilterType::New();
-    sobelFilter->SetInput(inputImage);
-    sobelFilter->Update();
+        std::vector<size_t> vectorOutputSize(3);
+        vectorOutputSize[0] = itkOutputSize[0];
+        vectorOutputSize[1] = itkOutputSize[1];
+        vectorOutputSize[2] = itkOutputSize[2];
 
-    typename OutputImageType::Pointer outputImage = sobelFilter->GetOutput();
-    itk::Size<3> outputSize = outputImage->GetLargestPossibleRegion().GetSize();
+        KWImage<OutputPixelType> *kwOutputImage = new KWImage<OutputPixelType>();
+        kwOutputImage->setDims(vectorOutputSize);
+        kwOutputImage->allocateBuffer();
+        kwOutputImage->copyFromBuffer(outputImage->GetBufferPointer());
 
-    nOutputCols = outputSize[0];
-    nOutputRows = outputSize[1];
-    nOutputImages = outputSize[2];
-
-    outputVolumePointer = new OutputPixelType[nOutputRows*nOutputCols*nOutputImages];
-
-    for (int i = 0; i < nInputRows * nInputCols * nInputImages; ++i){
-        outputVolumePointer[i] = outputImage->GetBufferPointer()[i];
+        outputImages.push_back(kwOutputImage);
     }
 
     return 0; // EXIT_SUCCESS
+}
+
+template<typename InputPixelType, typename OutputPixelType>
+int
+PipelineRunner<InputPixelType, OutputPixelType>
+::addInputImage(KWImage<InputPixelType> *image){
+    inputImages.push_back(image);
+    return 0; // EXIT_SUCCESS
+}
+
+template<typename InputPixelType, typename OutputPixelType>
+int
+PipelineRunner<InputPixelType, OutputPixelType>
+::addOutputImage(KWImage<OutputPixelType> *image){
+    outputImages.push_back(image);
+    return 0; // EXIT_SUCCESS
+}
+
+template<typename InputPixelType, typename OutputPixelType>
+KWImage<InputPixelType> *
+PipelineRunner<InputPixelType, OutputPixelType>
+::getNthInputImage(size_t n) {
+    return inputImages[n];
+}
+
+template<typename InputPixelType, typename OutputPixelType>
+KWImage<OutputPixelType> *
+PipelineRunner<InputPixelType, OutputPixelType>
+::getNthOutputImage(size_t n) {
+    return outputImages[n];
 }
 
 // ---------------------------
 // --- getters and setters ---
 // ---------------------------
 
-template<typename InputPixelType, typename OutputPixelType>
-size_t PipelineRunner<InputPixelType, OutputPixelType>::getNInputRows() const {
-    return nInputRows;
-}
-
-template<typename InputPixelType, typename OutputPixelType>
-void PipelineRunner<InputPixelType, OutputPixelType>::setNInputRows(size_t nInputRows) {
-    PipelineRunner::nInputRows = nInputRows;
-}
-
-template<typename InputPixelType, typename OutputPixelType>
-size_t PipelineRunner<InputPixelType, OutputPixelType>::getNInputCols() const {
-    return nInputCols;
-}
-
-template<typename InputPixelType, typename OutputPixelType>
-void PipelineRunner<InputPixelType, OutputPixelType>::setNInputCols(size_t nInputCols) {
-    PipelineRunner::nInputCols = nInputCols;
-}
-
-template<typename InputPixelType, typename OutputPixelType>
-size_t PipelineRunner<InputPixelType, OutputPixelType>::getNInputImages() const {
-    return nInputImages;
-}
-
-template<typename InputPixelType, typename OutputPixelType>
-void PipelineRunner<InputPixelType, OutputPixelType>::setNInputImages(size_t nInputImages) {
-    PipelineRunner::nInputImages = nInputImages;
-}
-
-template<typename InputPixelType, typename OutputPixelType>
-size_t PipelineRunner<InputPixelType, OutputPixelType>::getNOutputRows() const {
-    return nOutputRows;
-}
-
-template<typename InputPixelType, typename OutputPixelType>
-void PipelineRunner<InputPixelType, OutputPixelType>::setNOutputRows(size_t nOutputRows) {
-    PipelineRunner::nOutputRows = nOutputRows;
-}
-
-template<typename InputPixelType, typename OutputPixelType>
-size_t PipelineRunner<InputPixelType, OutputPixelType>::getNOutputCols() const {
-    return nOutputCols;
-}
-
-template<typename InputPixelType, typename OutputPixelType>
-void PipelineRunner<InputPixelType, OutputPixelType>::setNOutputCols(size_t nOutputCols) {
-    PipelineRunner::nOutputCols = nOutputCols;
-}
-
-template<typename InputPixelType, typename OutputPixelType>
-size_t PipelineRunner<InputPixelType, OutputPixelType>::getNOutputImages() const {
-    return nOutputImages;
-}
-
-template<typename InputPixelType, typename OutputPixelType>
-void PipelineRunner<InputPixelType, OutputPixelType>::setNOutputImages(size_t nOutputImages) {
-    PipelineRunner::nOutputImages = nOutputImages;
-}
-
-template<typename InputPixelType, typename OutputPixelType>
-InputPixelType *PipelineRunner<InputPixelType, OutputPixelType>::getInputVolumePointer() const {
-    return inputVolumePointer;
-}
-
-template<typename InputPixelType, typename OutputPixelType>
-void PipelineRunner<InputPixelType, OutputPixelType>::setInputVolumePointer(InputPixelType *inputVolumePointer) {
-    PipelineRunner::inputVolumePointer = inputVolumePointer;
-}
-
-template<typename InputPixelType, typename OutputPixelType>
-OutputPixelType *PipelineRunner<InputPixelType, OutputPixelType>::getOutputVolumePointer() const {
-    return outputVolumePointer;
-}
-
-template<typename InputPixelType, typename OutputPixelType>
-void PipelineRunner<InputPixelType, OutputPixelType>::setOutputVolumePointer(OutputPixelType *outputVolumePointer) {
-    PipelineRunner::outputVolumePointer = outputVolumePointer;
-}
 

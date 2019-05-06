@@ -7,6 +7,7 @@
 
 #include "itkbullseyelib_export.h"
 #include <iostream>
+#include "KWImage.h"
 
 template< typename InputPixelType, typename OutputPixelType = InputPixelType>
 class PipelineRunner {
@@ -19,43 +20,21 @@ public:
 
     int run();
 
-    size_t getNInputRows() const;
-    void setNInputRows(size_t nInputRows);
+    int addInputImage(KWImage<InputPixelType> *image);
 
-    size_t getNInputCols() const;
-    void setNInputCols(size_t nInputCols);
+    int addOutputImage(KWImage<OutputPixelType> *image);
 
-    size_t getNInputImages() const;
-    void setNInputImages(size_t nInputImages);
+    KWImage<InputPixelType> * getNthInputImage(size_t n);
 
-    size_t getNOutputRows() const;
-    void setNOutputRows(size_t nOutputRows);
+    KWImage<OutputPixelType> * getNthOutputImage(size_t n);
 
-    size_t getNOutputCols() const;
-    void setNOutputCols(size_t nOutputCols);
-
-    size_t getNOutputImages() const;
-    void setNOutputImages(size_t nOutputImages);
-
-    InputPixelType *getInputVolumePointer() const;
-    void setInputVolumePointer(InputPixelType *inputVolumePointer);
-
-    OutputPixelType *getOutputVolumePointer() const;
-    void setOutputVolumePointer(OutputPixelType *outputVolumePointer);
 
 private:
-    size_t nInputRows;
-    size_t nInputCols;
-    size_t nInputImages;
-    size_t nOutputRows;
-    size_t nOutputCols;
-    size_t nOutputImages;
 
-    InputPixelType* inputVolumePointer;
-    OutputPixelType* outputVolumePointer;
+    std::vector < KWImage < InputPixelType > * > inputImages;
+    std::vector < KWImage < OutputPixelType > * > outputImages;
 
 };
-
 
 
 #ifdef ITKBULLSEYELIB_EXPORT
