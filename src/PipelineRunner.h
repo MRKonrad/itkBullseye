@@ -37,7 +37,7 @@ private:
 };
 
 
-#ifdef ITKBULLSEYELIB_COMPILATION
+#ifndef ITKBULLSEYELIB_API
 #include "PipelineRunner.hxx"
 #endif // ITKBULLSEYELIB_COMPILATION
 
