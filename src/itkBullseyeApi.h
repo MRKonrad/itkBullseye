@@ -7,6 +7,7 @@
 
 #include "itkbullseyelib_export.h"
 #include "PipelineRunner.h"
+#include "KWImage.h"
 
 #ifndef ITKBULLSEYELIB_API
 #define ITKBULLSEYELIB_API
