@@ -18,7 +18,7 @@ file(GLOB_RECURSE SRC_FILES
 add_library(itkBullseyeLib SHARED ${SRC_FILES})
 add_library(itkBullseyeLibStatic STATIC ${SRC_FILES})
 
-# to exclude .hxx files
+# to exclude .hxx files from API
 set_target_properties(itkBullseyeLib PROPERTIES COMPILE_FLAGS -DITKBULLSEYELIB_COMPILATION)
 set_target_properties(itkBullseyeLibStatic PROPERTIES COMPILE_FLAGS -DITKBULLSEYELIB_COMPILATION)
 
