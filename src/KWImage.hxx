@@ -36,7 +36,7 @@ KWImage<PixelType>
 ::copyToBuffer(PixelType* buffer){
 
     for (int i = 0; i < this->getNumberOfPixels(); ++i) {
-        buffer[i] = buffer[i];
+        buffer[i] = KWImage::buffer[i];
     }
     return 0; //EXIT_SUCCESS
 }
@@ -47,7 +47,7 @@ KWImage<PixelType>
 ::copyFromBuffer(PixelType* buffer){
 
     for (int i = 0; i < this->getNumberOfPixels(); ++i) {
-        buffer[i] = buffer[i];
+        KWImage::buffer[i] = buffer[i];
     }
     return 0; //EXIT_SUCCESS
 }

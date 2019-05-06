@@ -4,6 +4,7 @@
 
 #include "itkSobelEdgeDetectionImageFilter.h"
 
+
 template<typename InputPixelType, typename OutputPixelType>
 PipelineRunner<InputPixelType, OutputPixelType>::PipelineRunner() {
 
@@ -12,9 +13,9 @@ PipelineRunner<InputPixelType, OutputPixelType>::PipelineRunner() {
 template<typename InputPixelType, typename OutputPixelType>
 PipelineRunner<InputPixelType, OutputPixelType>::~PipelineRunner() {
 
-    for (int i = 0; i < inputImages.size(); i++){
-        delete inputImages[i];
-    }
+//    for (int i = 0; i < inputImages.size(); i++){
+//        delete inputImages[i];
+//    }
 
     for (int i = 0; i < outputImages.size(); i++){
         delete outputImages[i];
