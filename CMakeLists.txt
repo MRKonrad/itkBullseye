@@ -18,6 +18,10 @@ file(GLOB_RECURSE SRC_FILES
 add_library(itkBullseyeLib SHARED ${SRC_FILES})
 add_library(itkBullseyeLibStatic STATIC ${SRC_FILES})
 
+# to exclude .hxx files
+set_target_properties(itkBullseyeLib PROPERTIES COMPILE_FLAGS -DITKBULLSEYELIB_COMPILATION)
+set_target_properties(itkBullseyeLibStatic PROPERTIES COMPILE_FLAGS -DITKBULLSEYELIB_COMPILATION)
+
 include_directories(${CMAKE_SOURCE_DIR}/src)
 include_directories(${PROJECT_BINARY_DIR})
 target_link_libraries (itkBullseyeLib PUBLIC ${ITK_LIBRARIES})
