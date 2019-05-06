@@ -33,30 +33,6 @@ TEST(playground, itkBullseyeApi_test) {
 
 }
 
-//TEST(playground, aaa_test){
-//
-//    typedef float InputPixelType;
-//    typedef itk::Image<InputPixelType, 3> InputImageType;
-//
-//    typename InputImageType::Pointer itkInputImage = InputImageType::New();
-//    itk::Index<3> start;
-//    start.Fill(0);
-//
-//    itk::Size<3> inputSize;
-//    inputSize[0] = 100;
-//    inputSize[1] = 100;
-//    inputSize[2] = 1;
-//
-//    itk::ImageRegion<3> region(start, inputSize);
-//    itkInputImage->SetRegions(region);
-//    itkInputImage->Allocate();
-//
-//    typedef itk::ImageFileWriter<InputImageType> WriterType;
-//    typename WriterType::Pointer writer = WriterType::New();
-//    writer->SetFileName ("../../tests/testData/temp/dupa.dcm");
-//    writer->SetInput(itkInputImage);
-//    writer->Update();
-//}
 
 TEST(playground, PipelineRunner_test) {
 
