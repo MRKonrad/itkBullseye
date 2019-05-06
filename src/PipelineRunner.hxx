@@ -109,8 +109,6 @@ PipelineRunner<InputPixelType, OutputPixelType>
     return outputImages[n];
 }
 
-// ---------------------------
-// --- getters and setters ---
-// ---------------------------
+
 
 

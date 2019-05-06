@@ -8,20 +8,15 @@
 #include "itkbullseyelib_export.h"
 #include "PipelineRunner.h"
 
-// template class ITKBULLSEYELIB_EXPORT PipelineRunner<std::int8_t>;
-// template class ITKBULLSEYELIB_EXPORT PipelineRunner<std::int16_t>;
-// template class ITKBULLSEYELIB_EXPORT PipelineRunner<std::int32_t>;
-// template class ITKBULLSEYELIB_EXPORT PipelineRunner<std::int64_t>;
-// template class ITKBULLSEYELIB_EXPORT PipelineRunner<std::uint8_t>;
-// template class ITKBULLSEYELIB_EXPORT PipelineRunner<std::uint16_t>;
-// template class ITKBULLSEYELIB_EXPORT PipelineRunner<std::uint32_t>;
-// template class ITKBULLSEYELIB_EXPORT PipelineRunner<std::uint64_t>;
-// template class ITKBULLSEYELIB_EXPORT PipelineRunner<std::float_t>;
-
 template class ITKBULLSEYELIB_EXPORT PipelineRunner<short>;
 template class ITKBULLSEYELIB_EXPORT PipelineRunner<int>;
 template class ITKBULLSEYELIB_EXPORT PipelineRunner<float>;
 template class ITKBULLSEYELIB_EXPORT PipelineRunner<double>;
+
+template class ITKBULLSEYELIB_EXPORT KWImage<short>;
+template class ITKBULLSEYELIB_EXPORT KWImage<int>;
+template class ITKBULLSEYELIB_EXPORT KWImage<float>;
+template class ITKBULLSEYELIB_EXPORT KWImage<double>;
 
 ITKBULLSEYELIB_EXPORT void dummyFunction();
 
