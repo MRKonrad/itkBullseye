@@ -5,6 +5,7 @@ install/
 itkBullseye*.dir/
 tests/testData/temp
 tests/testData/dicom/Volunteer*
+thirdparty/itkTensorFlow
 
 # mac
 *.DS_Store

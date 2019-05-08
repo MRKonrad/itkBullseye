@@ -23,7 +23,7 @@ configuration:
   - Release
 
 before_build:
-  - echo %PLATFORM%
+  - echo %platform%
   - echo %configuration%
   - cd %APPVEYOR_BUILD_FOLDER%\..
   - mkdir ITK_install

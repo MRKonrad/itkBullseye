@@ -47,6 +47,6 @@ private:
 
 #ifndef ITKBULLSEYELIB_API
 #include "KWImage.hxx"
-#endif // ITKBULLSEYELIB_COMPILATION
+#endif // ITKBULLSEYELIB_API
 
 #endif //ITKBULLSEYE_KWIMAGE_H

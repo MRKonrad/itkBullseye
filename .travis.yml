@@ -19,7 +19,6 @@ install:
   - curl -L -O http://mrkonrad.github.io/MRKonrad/files/ITK_built/ITK413_${TRAVIS_OS_NAME}_install.zip
   - unzip -a -q ITK413_${TRAVIS_OS_NAME}_install.zip
   - cd ${TRAVIS_BUILD_DIR}/thirdParty/googletest
-  - git checkout tags/release-1.8.1
 
 script:
   - cd ${TRAVIS_BUILD_DIR}
