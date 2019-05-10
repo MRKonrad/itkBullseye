@@ -2,40 +2,39 @@
 // Created by Konrad Werys on 24/03/2019.
 //
 
-#include <oxtfPipelineBuilder.h>
 #include "gtest/gtest.h"
 
 #include "itkDummyFilter.h"
 #include "itkDummyFunction.h"
-#include "PipelineRunner.h"
-#include "KWImageUtils.h"
-
-#include "itkImageFileReader.h"
-#include "itkImageFileWriter.h"
-#include "itkCastImageFilter.h"
-#include "itkMultiplyImageFilter.h"
-#include "itkFileTools.h"
+//#include "PipelineRunner.h"
+//#include "KWImageUtils.h"
+//
+//#include "itkImageFileReader.h"
+//#include "itkImageFileWriter.h"
+//#include "itkCastImageFilter.h"
+//#include "itkMultiplyImageFilter.h"
+//#include "itkFileTools.h"
 
 //// causes "H5::DataSpaceIException"
 
-//TEST(playground, DummyFilter_test) {
-//
-//    typedef itk::Image<unsigned char, 2>   InputImageType;
-//    typedef itk::Image<float, 2>   OutputImageType1;
-//    typedef itk::Image<int, 2>   OutputImageType2;
-//    typedef itk::DummyFilter<InputImageType, OutputImageType1, OutputImageType2>  FilterType;
-//
-//    FilterType::Pointer filter = FilterType::New();
-//
-//    EXPECT_NO_THROW(filter->Update());
-//
-//}
-//
-//TEST(playground, itkBullseyeApi_test) {
-//    dummyFunction();
-//    EXPECT_NO_THROW(dummyFunction());
-//
-//}
+TEST(playground, DummyFilter_test) {
+
+    typedef itk::Image<unsigned char, 2>   InputImageType;
+    typedef itk::Image<float, 2>   OutputImageType1;
+    typedef itk::Image<int, 2>   OutputImageType2;
+    typedef itk::DummyFilter<InputImageType, OutputImageType1, OutputImageType2>  FilterType;
+
+    FilterType::Pointer filter = FilterType::New();
+
+    EXPECT_NO_THROW(filter->Update());
+
+}
+
+TEST(playground, itkBullseyeApi_test) {
+    dummyFunction();
+    EXPECT_NO_THROW(dummyFunction());
+
+}
 //
 //TEST(playground, PipelineRunner_segmentation_test) {
 //
