@@ -40,8 +40,8 @@ private:
 
 
 
-#ifndef ITKBULLSEYELIB_API
+#ifndef ITKBULLSEYELIB_COMPILED
 #include "PipelineRunner.hxx"
-#endif // ITKBULLSEYELIB_API
+#endif // ITKBULLSEYELIB_COMPILED
 
 #endif //ITKBULLSEYE_PIPELINERUNNER_H

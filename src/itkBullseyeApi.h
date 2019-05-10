@@ -9,10 +9,6 @@
 #include "PipelineRunner.h"
 #include "KWImage.h"
 
-#ifndef ITKBULLSEYELIB_API
-#define ITKBULLSEYELIB_API
-#endif
-
 //template class ITKBULLSEYELIB_EXPORT PipelineRunner<short>;
 //template class ITKBULLSEYELIB_EXPORT PipelineRunner<int>;
 template class ITKBULLSEYELIB_EXPORT PipelineRunner<float>;
