@@ -7,7 +7,7 @@ init:
   - ps: Update-AppveyorBuild -Version "$($env:APPVEYOR_REPO_BRANCH) - $($env:APPVEYOR_REPO_COMMIT)"
 
 environment:
-  toolset: v130
+  toolset: v140
   zip_name: itkBullseye_%APPVEYOR_REPO_TAG_NAME%_windows_%PLATFORM%_%toolset%
 
 install:
