@@ -7,6 +7,7 @@
 
 #include "itkbullseyelib_export.h"
 #include <iostream>
+#include <map>
 #include "KWImage.h"
 
 template< typename InputPixelType, typename OutputPixelType = InputPixelType>
@@ -28,6 +29,7 @@ public:
 
     KWImage<OutputPixelType> * getNthOutputImage(size_t n);
 
+    std::map<std::string, std::string> userData;
 
 private:
 
@@ -35,6 +37,7 @@ private:
     std::vector < KWImage < OutputPixelType > * > outputImages;
 
 };
+
 
 
 #ifndef ITKBULLSEYELIB_API

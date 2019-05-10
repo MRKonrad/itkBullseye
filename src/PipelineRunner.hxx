@@ -2,8 +2,11 @@
 // Created by Konrad Werys on 30/04/2019.
 //
 
-#include "itkSobelEdgeDetectionImageFilter.h"
-
+//#include "itkSobelEdgeDetectionImageFilter.h"
+#include "itkTensorFlowFilter.h"
+#include "oxtfUtils.h"
+#include "KWImageUtils.h"
+#include "oxtfPipelineBuilder.h"
 
 template<typename InputPixelType, typename OutputPixelType>
 PipelineRunner<InputPixelType, OutputPixelType>::PipelineRunner() {
@@ -30,48 +33,31 @@ PipelineRunner<InputPixelType, OutputPixelType>
     std::cout << "PipeRunner::run" << std::endl;
 
     for (int i = 0; i < inputImages.size(); i++) {
-        KWImage<InputPixelType> *kwInputImage = inputImages[i];
-
-        if (!kwInputImage->getBuffer()) {
-            std::cerr << "inputVolumePointer is null" << std::endl;
-            continue;
-        }
 
         typedef itk::Image<InputPixelType, 3> InputImageType;
         typedef itk::Image<OutputPixelType, 3> OutputImageType;
 
-        typename InputImageType::Pointer itkInputImage = InputImageType::New();
-        itk::Index<3> start;
-        start.Fill(0);
+        if (!inputImages[i]->getBuffer()) {
+            std::cerr << "inputVolumePointer is null" << std::endl;
+            continue;
+        }
 
-        itk::Size<3> inputSize;
-        inputSize[0] = kwInputImage->getDims()[0];
-        inputSize[1] = kwInputImage->getDims()[1];
-        inputSize[2] = kwInputImage->getDims()[2];
+        typename InputImageType::Pointer itkInputImage = KWImageUtils::KWImage2ItkImage<InputImageType, InputPixelType >(inputImages[i]);
 
-        itk::ImageRegion<3> region(start, inputSize);
-        itkInputImage->SetRegions(region);
-        itkInputImage->Allocate();
+        oxtf::GraphReader graphReader;
+        graphReader.setGraphPath(userData["model_path"]);
+        graphReader.readGraph();
 
-        kwInputImage->copyToBuffer(itkInputImage->GetBufferPointer());
+        oxtf::PipelineBuilder pipelineBuilder;
+        itkInputImage = pipelineBuilder.padImage<InputImageType>(itkInputImage, graphReader.getMaxX(), graphReader.getMaxY());
 
-        typedef itk::SobelEdgeDetectionImageFilter<InputImageType, OutputImageType> SobelEdgeDetectionImageFilterType;
-        typename SobelEdgeDetectionImageFilterType::Pointer sobelFilter = SobelEdgeDetectionImageFilterType::New();
-        sobelFilter->SetInput(itkInputImage);
-        sobelFilter->Update();
+        typedef itk::TensorFlowImageFilter <InputImageType, OutputImageType> TensorFlowImageFilterType;
+        typename TensorFlowImageFilterType::Pointer tfFilter = TensorFlowImageFilterType::New();
+        tfFilter->SetInput(itkInputImage);
+        tfFilter->SetGraphReader(&graphReader);
+        tfFilter->Update();
 
-        typename OutputImageType::Pointer outputImage = sobelFilter->GetOutput();
-        itk::Size<3> itkOutputSize = outputImage->GetLargestPossibleRegion().GetSize();
-
-        std::vector<size_t> vectorOutputSize(3);
-        vectorOutputSize[0] = itkOutputSize[0];
-        vectorOutputSize[1] = itkOutputSize[1];
-        vectorOutputSize[2] = itkOutputSize[2];
-
-        KWImage<OutputPixelType> *kwOutputImage = new KWImage<OutputPixelType>();
-        kwOutputImage->setDims(vectorOutputSize);
-        kwOutputImage->allocateBuffer();
-        kwOutputImage->copyFromBuffer(outputImage->GetBufferPointer());
+        KWImage<OutputPixelType> *kwOutputImage = KWImageUtils::ItkImage2KWImage<OutputImageType, OutputPixelType>(tfFilter->GetOutput());
 
         outputImages.push_back(kwOutputImage);
     }

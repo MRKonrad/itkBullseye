@@ -7,6 +7,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_INSTALL_RPATH "@executable_path")
 
+#delete!!!
+set(CMAKE_INSTALL_PREFIX install)
+#delete!!!
+
 include(cmake/itkTensorFlow.cmake)
 
 find_package(ITK REQUIRED HINTS ${ITK_DIR_HINTS})
@@ -25,6 +29,9 @@ include_directories(${PROJECT_BINARY_DIR})
 target_link_libraries (itkBullseyeLib PUBLIC ${ITK_LIBRARIES})
 target_link_libraries (itkBullseyeLibStatic PUBLIC ${ITK_LIBRARIES})
 
+target_link_libraries (itkBullseyeLib PUBLIC itkTensorFlowLib)
+target_link_libraries (itkBullseyeLibStatic PUBLIC itkTensorFlowLib)
+
 include(GenerateExportHeader)
 generate_export_header(itkBullseyeLib)
 set_target_properties(itkBullseyeLibStatic PROPERTIES COMPILE_FLAGS -DITKBULLSEYELIB_STATIC_DEFINE)
@@ -33,3 +40,4 @@ install (TARGETS itkBullseyeLib DESTINATION .)
 
 set(itkBullseye_BUILD_TESTING ON CACHE BOOL "Do you want to build itkBullseye tests?")
 add_subdirectory(tests)
+

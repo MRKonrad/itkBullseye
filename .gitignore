@@ -4,6 +4,7 @@ Win32/*
 install/
 itkBullseye*.dir/
 tests/testData/temp
+tests/testData/models
 tests/testData/dicom/Volunteer*
 thirdparty/itkTensorFlow
 

@@ -16,9 +16,9 @@ if (NOT EXISTS ${CMAKE_SOURCE_DIR}/thirdParty/itkTensorflow)
 endif()
 
 if (
-        NOT EXISTS ${CMAKE_SOURCE_DIR}/thirdParty/itkTensorflow/libitkTensorflowLib.dylib AND
-        NOT EXISTS ${CMAKE_SOURCE_DIR}/thirdParty/itkTensorflow/libitkTensorflowLib.so AND
-        NOT EXISTS ${CMAKE_SOURCE_DIR}/thirdParty/itkTensorflow/itkTensorflowLib.dll )
+        NOT EXISTS ${CMAKE_SOURCE_DIR}/thirdParty/itkTensorflow/lib/libitkTensorflowLib.dylib AND
+        NOT EXISTS ${CMAKE_SOURCE_DIR}/thirdParty/itkTensorflow/lib/libitkTensorflowLib.so AND
+        NOT EXISTS ${CMAKE_SOURCE_DIR}/thirdParty/itkTensorflow/lib/itkTensorflowLib.dll )
 
     file( DOWNLOAD ${DownloadUrl} ${DownloadPath} STATUS status LOG log)
 
@@ -36,7 +36,7 @@ if (
 endif()
 
 include_directories(${CMAKE_SOURCE_DIR}/thirdParty/itkTensorflow/include)
-link_directories(${CMAKE_SOURCE_DIR}/thirdParty/itkTensorflow)
+link_directories(${CMAKE_SOURCE_DIR}/thirdParty/itkTensorflow/lib)
 
 #if(WIN32) # confusingly this means any windows system
 #    configure_file(thirdParty/tensorflow/lib/tensorflow.dll ${CMAKE_CURRENT_BINARY_DIR}/Debug/tensorflow.dll COPYONLY)

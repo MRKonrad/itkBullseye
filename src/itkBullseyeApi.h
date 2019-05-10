@@ -13,10 +13,10 @@
 #define ITKBULLSEYELIB_API
 #endif
 
-template class ITKBULLSEYELIB_EXPORT PipelineRunner<short>;
-template class ITKBULLSEYELIB_EXPORT PipelineRunner<int>;
+//template class ITKBULLSEYELIB_EXPORT PipelineRunner<short>;
+//template class ITKBULLSEYELIB_EXPORT PipelineRunner<int>;
 template class ITKBULLSEYELIB_EXPORT PipelineRunner<float>;
-template class ITKBULLSEYELIB_EXPORT PipelineRunner<double>;
+//template class ITKBULLSEYELIB_EXPORT PipelineRunner<double>;
 
 template class ITKBULLSEYELIB_EXPORT KWImage<short>;
 template class ITKBULLSEYELIB_EXPORT KWImage<int>;

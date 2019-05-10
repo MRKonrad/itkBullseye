@@ -12,6 +12,22 @@ Create a dicom image with a bullseye
 | [Downloads][downloads_link]               | [![GitHub Releases (by Release)][downloads_badge]][downloads_link] |
 
 
+# Notes
+
+## How to set or access env variables
+
+```c++
+    const char* env_p = std::getenv("CustomerIceProgs");
+    if (env_p)
+        std::cout << env_p << std::endl;
+    else {
+        std::cout << "no env_p" << std::endl;
+        return 1; //EXIT_FAILURE
+    }
+    putenv("CustomerIceProgs=../../tests/testData/models");
+    std::string rootFolder(std::getenv("CustomerIceProgs")); 
+```
+
 [travis_badge]: https://img.shields.io/travis/MRKonrad/itkBullseye/master.svg?style=flat-square
 [travis_link]: https://travis-ci.org/MRKonrad/itkBullseye
 [appveyor_badge]: https://img.shields.io/appveyor/ci/MRKonrad/itkBullseye/master.svg?style=flat-square

@@ -2,17 +2,20 @@
 // Created by Konrad Werys on 24/03/2019.
 //
 
+#include <oxtfPipelineBuilder.h>
 #include "gtest/gtest.h"
 
 #include "itkDummyFilter.h"
 #include "itkDummyFunction.h"
 #include "PipelineRunner.h"
+#include "KWImageUtils.h"
 
 #include "itkImageFileReader.h"
 #include "itkImageFileWriter.h"
 #include "itkCastImageFilter.h"
 #include "itkMultiplyImageFilter.h"
 #include "itkFileTools.h"
+
 
 TEST(playground, DummyFilter_test) {
 
@@ -33,67 +36,96 @@ TEST(playground, itkBullseyeApi_test) {
 
 }
 
+TEST(playground, PipelineRunner_segmentation_test) {
 
-TEST(playground, PipelineRunner_test) {
-
-    std::string inputFilename = "../../tests/testData/dicom/T1Map.dcm";
-    std::string outputFilename = "../../tests/testData/temp/PipelineRunner_test.dcm";
+    std::vector<std::string> inputFilenames;
+    inputFilenames.emplace_back("../../tests/testData/dicom/T1Map.dcm");
+    std::string outputDir = "../../tests/testData/temp/PipelineRunner_segmentation_test";
+    std::string modelFilePath = "../../tests/testData/models/model_ocmr7.pb";
     itk::FileTools::CreateDirectory("../../tests/testData/temp");
 
-    typedef float InputPixelType;
-    typedef int OutputPixelType;
+    typedef float PixelType;
+    typedef itk::Image<PixelType, 3> ImageType;
 
-    typedef itk::Image<InputPixelType, 3> InputImageType;
-    typedef itk::Image<OutputPixelType, 3> OutputImageType;
+    oxtf::PipelineBuilder pipelineBuilder;
+    oxtf::GraphReader *graphReader = pipelineBuilder.graphReaderMaker(modelFilePath);
+    if (!graphReader) return; // no model
 
-    typedef itk::ImageFileReader<InputImageType> ReaderType;
-    ReaderType::Pointer reader = ReaderType::New();
-    reader->SetFileName (inputFilename);
-    reader->Update();
+    pipelineBuilder.setInputImagesGrayscalePaths(inputFilenames);
+    ImageType::Pointer imageIn = pipelineBuilder.readInputImage<ImageType>();
+    ImageType::SizeType size = imageIn->GetLargestPossibleRegion().GetSize();
+    imageIn = pipelineBuilder.padImage<ImageType>(imageIn, graphReader->getMaxX(), graphReader->getMaxY());
 
-    itk::Size<3> inputSize = reader->GetOutput()->GetLargestPossibleRegion().GetSize();
+    //***************************
+    //*** special sauce start ***
+    //***************************
 
-    PipelineRunner<InputPixelType, InputPixelType> pipelineRunner;
-    KWImage<InputPixelType> *kwInputImage = new KWImage<InputPixelType>;
-    std::vector<size_t> kwImputImageDims(3);
-    kwImputImageDims[0] = inputSize[0];
-    kwImputImageDims[1] = inputSize[1];
-    kwImputImageDims[2] = inputSize[2];
-    kwInputImage->setDims(kwImputImageDims);
-    kwInputImage->setBuffer(reader->GetOutput()->GetBufferPointer());
+    itk::Size<3> inputSize = imageIn->GetLargestPossibleRegion().GetSize();
+
+    KWImage<PixelType> *kwInputImage = KWImageUtils::ItkImage2KWImage<ImageType, PixelType>(imageIn);
+
+    PipelineRunner<PixelType, PixelType> pipelineRunner;
     pipelineRunner.addInputImage(kwInputImage);
+    pipelineRunner.userData["model_path"] = modelFilePath;
 
     EXPECT_NO_THROW(pipelineRunner.run());
 
-    InputImageType::Pointer outputImage = InputImageType::New();
+    ImageType::Pointer outputImage = KWImageUtils::KWImage2ItkImage<ImageType, PixelType >(pipelineRunner.getNthOutputImage(0));
 
-    itk::Index<3> start;
-    start.Fill(0);
+    //***************************
+    //*** special sauce stop  ***
+    //***************************
 
-    itk::Size<3> outputSize;
-    outputSize[0] = pipelineRunner.getNthOutputImage(0)->getDims()[0];
-    outputSize[1] = pipelineRunner.getNthOutputImage(0)->getDims()[1];
-    outputSize[2] = pipelineRunner.getNthOutputImage(0)->getDims()[2];
+    outputImage = pipelineBuilder.cropImage<ImageType>(outputImage, size[0], size[1]);
+    outputImage = pipelineBuilder.multiplyImage<ImageType>(outputImage, 255);
+    pipelineBuilder.writeImages<ImageType>(outputImage, outputDir);
 
-    itk::ImageRegion<3> region(start, outputSize);
-    outputImage->SetRegions(region);
-    outputImage->Allocate();
+}
 
-    pipelineRunner.getNthOutputImage(0)->copyToBuffer(outputImage->GetBufferPointer());
+TEST(playground, PipelineRunner_moco_test) {
 
-//    typedef itk::MultiplyImageFilter<InputImageType> MultiplierType;
-//    MultiplierType::Pointer multiplier = MultiplierType::New();
-//    multiplier->SetInput(outputImage);
-//    multiplier->SetConstant(255);
+    std::vector<std::string> inputFilenames;
+    inputFilenames.emplace_back("../../tests/testData/dicom/T1Map.dcm");
+    inputFilenames.emplace_back("../../tests/testData/dicom/T1Map.dcm");
+    inputFilenames.emplace_back("../../tests/testData/dicom/T1Map.dcm");
+    inputFilenames.emplace_back("../../tests/testData/dicom/T1Map.dcm");
+    inputFilenames.emplace_back("../../tests/testData/dicom/T1Map.dcm");
+    inputFilenames.emplace_back("../../tests/testData/dicom/T1Map.dcm");
+    inputFilenames.emplace_back("../../tests/testData/dicom/T1Map.dcm");
+    std::string modelFilePath = "../../tests/testData/models/MoCoAI.pb";
+    std::string outputDir = "../../tests/testData/temp/PipelineRunner_moco_test";
+    itk::FileTools::CreateDirectory("../../tests/testData/temp");
 
-    typedef itk::CastImageFilter<InputImageType, OutputImageType> CasterType;
-    CasterType::Pointer caster = CasterType::New();
-    caster->SetInput(outputImage);
+    typedef float PixelType;
+    typedef itk::Image<PixelType, 3> ImageType;
 
-    typedef itk::ImageFileWriter<OutputImageType> WriterType;
-    WriterType::Pointer writer = WriterType::New();
-    writer->SetFileName (outputFilename);
-    writer->SetInput(caster->GetOutput());
-    writer->Update();
+    oxtf::PipelineBuilder pipelineBuilder;
+    oxtf::GraphReader *graphReader = pipelineBuilder.graphReaderMaker(modelFilePath);
+    if (!graphReader) return; // no model
+
+    pipelineBuilder.setInputImagesGrayscalePaths(inputFilenames);
+    ImageType::Pointer imageIn = pipelineBuilder.readInputImage<ImageType>();
+    //imageIn = pipelineBuilder.padImage<ImageType>(imageIn, graphReader->getMaxX(), graphReader->getMaxY());
+
+    //***************************
+    //*** special sauce start ***
+    //***************************
+
+    KWImage<PixelType> *kwInputImage = KWImageUtils::ItkImage2KWImage<ImageType, PixelType>(imageIn);
+
+    PipelineRunner<PixelType, PixelType> pipelineRunner;
+    pipelineRunner.addInputImage(kwInputImage);
+    pipelineRunner.userData["model_path"] = modelFilePath;
+
+    EXPECT_NO_THROW(pipelineRunner.run());
+
+    ImageType::Pointer outputImage = KWImageUtils::KWImage2ItkImage<ImageType, PixelType >(pipelineRunner.getNthOutputImage(0));
+
+    //***************************
+    //*** special sauce stop  ***
+    //***************************
+
+    //outputImage = pipelineBuilder.multiplyImage<ImageType>(outputImage, 50);
+    pipelineBuilder.writeImages<ImageType>(outputImage, outputDir);
 
 }
