@@ -44,14 +44,14 @@ after_build:
   - dir
   - cmake --build . --config %CONFIGURATION% --target INSTALL
   - dir %CONFIGURATION%
-  - cd ..
+  - cd %APPVEYOR_BUILD_FOLDER%\bin\install
   - dir install
   - cd install
   - 7z a %zip_name%.zip * -r # zip
-  - cd ..
+
+  - cd %APPVEYOR_BUILD_FOLDER%
   - mkdir deployment
-  - copy install\%zip_name%.zip deployment\%zip_name%.zip
-  - dir
+  - copy %APPVEYOR_BUILD_FOLDER%\bin\install\%zip_name%.zip %APPVEYOR_BUILD_FOLDER%\deployment\%zip_name%.zip
   - dir deployment
 
 test_script:
