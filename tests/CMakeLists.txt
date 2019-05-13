@@ -22,14 +22,8 @@ if(itkBullseye_BUILD_TESTING)
 
   add_test(NAME ctest_tests COMMAND itkBullseyeTests)
 
-  # message(STATUS ${CMAKE_CURRENT_BINARY_DIR})
-  # message(STATUS ${CMAKE_BUILD_TYPE})
-
-
   install (TARGETS itkBullseyeTests DESTINATION tests)
-  install (DIRECTORY ${CMAKE_SOURCE_DIR}/tests DESTINATION testData)
-
-  message(STATUS CMAKE_INSTALL_PREFIX  ${CMAKE_INSTALL_PREFIX})
+  install (DIRECTORY ${CMAKE_SOURCE_DIR}/tests/testData DESTINATION .)
 
   if(WIN32)
     install (FILES ${CMAKE_SOURCE_DIR}/thirdParty/itkTensorFlow/lib/tensorflow.dll DESTINATION tests)
@@ -37,9 +31,9 @@ if(itkBullseye_BUILD_TESTING)
     install (FILES ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_PREFIX}/lib/itkBullseyeLib.dll DESTINATION tests)
   else()
     install (FILES ${CMAKE_SOURCE_DIR}/thirdParty/itkTensorFlow/lib/libtensorflow.so DESTINATION tests)
-    install (FILES ${CMAKE_SOURCE_DIR}/thirdParty/itkTensorFlow/lib/libtensorflow_frameworks.so DESTINATION tests)
-    install (FILES ${CMAKE_SOURCE_DIR}/thirdParty/itkTensorFlow/lib/libitkTensorFlowLib${CMAKE_SHARED_LIBRARY} DESTINATION tests)
-    install (FILES ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_PREFIX}/lib/libitkBullseyeLib${CMAKE_SHARED_LIBRARY} DESTINATION tests)
+    install (FILES ${CMAKE_SOURCE_DIR}/thirdParty/itkTensorFlow/lib/libtensorflow_framework.so DESTINATION tests)
+    install (FILES ${CMAKE_SOURCE_DIR}/thirdParty/itkTensorFlow/lib/libitkTensorFlowLib${CMAKE_SHARED_LIBRARY_SUFFIX} DESTINATION tests)
+    install (FILES ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_PREFIX}/lib/libitkBullseyeLib${CMAKE_SHARED_LIBRARY_SUFFIX} DESTINATION tests)
   endif()
 
 endif(itkBullseye_BUILD_TESTING)

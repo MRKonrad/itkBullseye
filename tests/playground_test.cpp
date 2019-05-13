@@ -40,10 +40,10 @@ TEST(playground, itkBullseyeApi_test) {
 TEST(playground, PipelineRunner_segmentation_test) {
 
     std::vector<std::string> inputFilenames;
-    inputFilenames.emplace_back("../../tests/testData/dicom/T1Map.dcm");
-    std::string outputDir = "../../tests/testData/temp/PipelineRunner_segmentation_test";
-    std::string modelFilePath = "../../tests/testData/models/model_ocmr7.pb";
-    itk::FileTools::CreateDirectory("../../tests/testData/temp");
+    inputFilenames.emplace_back("../testData/dicom/T1Map.dcm");
+    std::string outputDir = "../testData/temp/PipelineRunner_segmentation_test";
+    std::string modelFilePath = "../testData/models/model_ocmr7.pb";
+    itk::FileTools::CreateDirectory("../tests/testData/temp");
 
     typedef float PixelType;
     typedef itk::Image<PixelType, 3> ImageType;

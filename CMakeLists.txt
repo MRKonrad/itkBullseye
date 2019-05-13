@@ -35,6 +35,5 @@ generate_export_header(itkBullseyeLib)
 
 install (TARGETS itkBullseyeLib DESTINATION lib)
 
-
 set(itkBullseye_BUILD_TESTING ON CACHE BOOL "Do you want to build itkBullseye tests?")
 add_subdirectory(tests)
