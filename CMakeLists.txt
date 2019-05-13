@@ -35,5 +35,16 @@ generate_export_header(itkBullseyeLib)
 
 install (TARGETS itkBullseyeLib DESTINATION lib)
 
+if(WIN32)
+    install (FILES ${CMAKE_SOURCE_DIR}/thirdParty/itkTensorFlow/lib/tensorflow.dll DESTINATION lib)
+    install (FILES ${CMAKE_SOURCE_DIR}/thirdParty/itkTensorFlow/lib/itkTensorFlowLib.dll DESTINATION lib)
+    install (FILES ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_PREFIX}/lib/itkBullseyeLib.dll DESTINATION lib)
+else()
+    install (FILES ${CMAKE_SOURCE_DIR}/thirdParty/itkTensorFlow/lib/libtensorflow.so DESTINATION lib)
+    install (FILES ${CMAKE_SOURCE_DIR}/thirdParty/itkTensorFlow/lib/libtensorflow_framework.so DESTINATION lib)
+    install (FILES ${CMAKE_SOURCE_DIR}/thirdParty/itkTensorFlow/lib/libitkTensorFlowLib${CMAKE_SHARED_LIBRARY_SUFFIX} DESTINATION lib)
+    install (FILES ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_PREFIX}/lib/libitkBullseyeLib${CMAKE_SHARED_LIBRARY_SUFFIX} DESTINATION lib)
+endif()
+
 set(itkBullseye_BUILD_TESTING ON CACHE BOOL "Do you want to build itkBullseye tests?")
 add_subdirectory(tests)
