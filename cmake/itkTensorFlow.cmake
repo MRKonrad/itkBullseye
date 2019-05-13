@@ -38,9 +38,12 @@ endif()
 include_directories(${CMAKE_SOURCE_DIR}/thirdParty/itkTensorflow/include)
 link_directories(${CMAKE_SOURCE_DIR}/thirdParty/itkTensorflow/lib)
 
-#if(WIN32) # confusingly this means any windows system
-#    configure_file(thirdParty/tensorflow/lib/tensorflow.dll ${CMAKE_CURRENT_BINARY_DIR}/Debug/tensorflow.dll COPYONLY)
-#    configure_file(thirdParty/tensorflow/lib/tensorflow.dll ${CMAKE_CURRENT_BINARY_DIR}/tests/Debug/tensorflow.dll COPYONLY)
-#    configure_file(thirdParty/tensorflow/lib/tensorflow.dll ${CMAKE_CURRENT_BINARY_DIR}/Release/tensorflow.dll COPYONLY)
-#    configure_file(thirdParty/tensorflow/lib/tensorflow.dll ${CMAKE_CURRENT_BINARY_DIR}/tests/Release/tensorflow.dll COPYONLY)
-#endif()
+if(WIN32) # confusingly this means any windows system
+   configure_file(thirdParty/itkTensorflow/lib/tensorflow.dll ${CMAKE_CURRENT_BINARY_DIR}/Debug/tensorflow.dll COPYONLY)
+   configure_file(thirdParty/itkTensorflow/lib/tensorflow.dll ${CMAKE_CURRENT_BINARY_DIR}/tests/Debug/tensorflow.dll COPYONLY)
+   configure_file(thirdParty/itkTensorflow/lib/itkTensorFlowLib.dll ${CMAKE_CURRENT_BINARY_DIR}/tests/Debug/itkTensorFlowLib.dll COPYONLY)
+   
+   configure_file(thirdParty/itkTensorflow/lib/tensorflow.dll ${CMAKE_CURRENT_BINARY_DIR}/Release/tensorflow.dll COPYONLY)
+   configure_file(thirdParty/itkTensorflow/lib/tensorflow.dll ${CMAKE_CURRENT_BINARY_DIR}/tests/Release/tensorflow.dll COPYONLY)
+   configure_file(thirdParty/itkTensorflow/lib/itkTensorFlowLib.dll ${CMAKE_CURRENT_BINARY_DIR}/tests/Release/itkTensorFlowLib.dll COPYONLY)
+endif()

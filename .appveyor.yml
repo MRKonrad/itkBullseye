@@ -44,16 +44,16 @@ after_build:
   - dir
   - cmake --build . --config %CONFIGURATION% --target INSTALL
   - dir %CONFIGURATION%
-  - cd %APPVEYOR_BUILD_FOLDER%\bin\install
+  - cd %APPVEYOR_BUILD_FOLDER%\bin\install\lib
   - 7z a %zip_name%.zip * -r # zip
 
   - cd %APPVEYOR_BUILD_FOLDER%
   - mkdir deployment
-  - copy %APPVEYOR_BUILD_FOLDER%\bin\install\%zip_name%.zip %APPVEYOR_BUILD_FOLDER%\deployment\%zip_name%.zip
+  - copy %APPVEYOR_BUILD_FOLDER%\bin\install\lib\%zip_name%.zip %APPVEYOR_BUILD_FOLDER%\deployment\%zip_name%.zip
   - dir deployment
 
 test_script:
-  - cd %APPVEYOR_BUILD_FOLDER%\bin\tests\%CONFIGURATION%
+  - cd %APPVEYOR_BUILD_FOLDER%\bin\install\tests\
   - itkBullseyeTests.exe
 
 artifacts:
