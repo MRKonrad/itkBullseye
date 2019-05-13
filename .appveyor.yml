@@ -45,8 +45,6 @@ after_build:
   - cmake --build . --config %CONFIGURATION% --target INSTALL
   - dir %CONFIGURATION%
   - cd %APPVEYOR_BUILD_FOLDER%\bin\install
-  - dir install
-  - cd install
   - 7z a %zip_name%.zip * -r # zip
 
   - cd %APPVEYOR_BUILD_FOLDER%
