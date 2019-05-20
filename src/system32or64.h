@@ -1,5 +1,6 @@
 //
 // Created by Konrad Werys on 20/05/2019.
+// based on https://stackoverflow.com/questions/1505582/determining-32-vs-64-bit-in-c
 //
 
 #ifndef ITKBULLSEYE_SYSTEM32OR64_H

@@ -38,6 +38,7 @@ include(GenerateExportHeader)
 generate_export_header(itkBullseyeLib)
 
 install (TARGETS itkBullseyeLib DESTINATION lib)
+install (TARGETS itkBullseyeStaticLib DESTINATION lib)
 
 if(WIN32)
     install (FILES ${CMAKE_SOURCE_DIR}/thirdParty/itkTensorflow/lib/tensorflow.dll DESTINATION lib)
