@@ -25,6 +25,8 @@ if(itkBullseye_BUILD_TESTING)
   install (TARGETS itkBullseyeTests DESTINATION tests)
   install (DIRECTORY ${CMAKE_SOURCE_DIR}/tests/testData DESTINATION .)
 
+  file(COPY ${CMAKE_SOURCE_DIR}/tests/testData/ DESTINATION ${CMAKE_BINARY_DIR}/testData)
+
   if(WIN32)
     install (FILES ${CMAKE_SOURCE_DIR}/thirdParty/itkTensorFlow/lib/tensorflow.dll DESTINATION tests)
     install (FILES ${CMAKE_SOURCE_DIR}/thirdParty/itkTensorFlow/lib/itkTensorFlowLib.dll DESTINATION tests)

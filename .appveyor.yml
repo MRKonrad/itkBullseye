@@ -16,7 +16,7 @@ install:
 #  - git checkout tags/release-1.4.0
 
 platform:
-#  - Win32
+  - Win32
   - x64
 
 configuration:

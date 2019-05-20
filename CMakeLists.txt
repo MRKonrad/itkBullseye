@@ -23,12 +23,16 @@ file(GLOB_RECURSE SRC_FILES
         src/*.t*)
 
 add_library(itkBullseyeLib SHARED ${SRC_FILES})
+add_library(itkBullseyeStaticLib STATIC ${SRC_FILES})
 
 include_directories(${CMAKE_SOURCE_DIR}/src)
 include_directories(${PROJECT_BINARY_DIR})
-target_link_libraries (itkBullseyeLib PUBLIC ${ITK_LIBRARIES})
 
+target_link_libraries (itkBullseyeLib PUBLIC ${ITK_LIBRARIES})
 target_link_libraries (itkBullseyeLib PUBLIC itkTensorFlowLib)
+
+target_link_libraries (itkBullseyeStaticLib PUBLIC ${ITK_LIBRARIES})
+target_link_libraries (itkBullseyeStaticLib PUBLIC itkTensorFlowLib)
 
 include(GenerateExportHeader)
 generate_export_header(itkBullseyeLib)
