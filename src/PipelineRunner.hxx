@@ -2,11 +2,15 @@
 // Created by Konrad Werys on 30/04/2019.
 //
 
-//#include "itkSobelEdgeDetectionImageFilter.h"
+#include "KWImageUtils.h"
+#include "itkSobelEdgeDetectionImageFilter.h"
+
+#include "system32or64.h"
+#ifdef ENVIRONMENT64
 #include "itkTensorFlowFilter.h"
 #include "oxtfUtils.h"
-#include "KWImageUtils.h"
 #include "oxtfPipelineBuilder.h"
+#endif // ENVIRONMENT64
 
 template<typename InputPixelType, typename OutputPixelType>
 PipelineRunner<InputPixelType, OutputPixelType>::PipelineRunner() {
@@ -43,7 +47,9 @@ PipelineRunner<InputPixelType, OutputPixelType>
         }
 
         typename InputImageType::Pointer itkInputImage = KWImageUtils::KWImage2ItkImage<InputImageType, InputPixelType >(inputImages[i]);
+        typename InputImageType::Pointer itkOutputImage;
 
+#ifdef ENVIRONMENT64
         oxtf::GraphReader graphReader;
         graphReader.setGraphPath(userData["model_path"]);
         graphReader.readGraph();
@@ -56,8 +62,18 @@ PipelineRunner<InputPixelType, OutputPixelType>
         tfFilter->SetInput(itkInputImage);
         tfFilter->SetGraphReader(&graphReader);
         tfFilter->Update();
+        itkOutputImage = tfFilter->GetOutput();
+#endif // ENVIRONMENT64
 
-        KWImage<OutputPixelType> *kwOutputImage = KWImageUtils::ItkImage2KWImage<OutputImageType, OutputPixelType>(tfFilter->GetOutput());
+#ifdef ENVIRONMENT32
+        typedef itk::SobelEdgeDetectionImageFilter <InputImageType, OutputImageType> SobelEdgeDetectionType;
+        typename SobelEdgeDetectionType::Pointer sobelFilter = SobelEdgeDetectionType::New();
+        sobelFilter->SetInput(itkInputImage);
+        sobelFilter->Update();
+        itkOutputImage = sobelFilter->GetOutput();
+#endif // ENVIRONMENT32
+
+        KWImage<OutputPixelType> *kwOutputImage = KWImageUtils::ItkImage2KWImage<OutputImageType, OutputPixelType>(itkOutputImage);
 
         outputImages.push_back(kwOutputImage);
     }

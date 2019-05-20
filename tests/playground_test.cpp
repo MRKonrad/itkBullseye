@@ -6,17 +6,12 @@
 
 #include "itkDummyFilter.h"
 #include "itkDummyFunction.h"
-#include "oxtfPipelineBuilder.h"
-//#include "PipelineRunner.h"
-//#include "KWImageUtils.h"
-//
-//#include "itkImageFileReader.h"
-//#include "itkImageFileWriter.h"
-//#include "itkCastImageFilter.h"
-//#include "itkMultiplyImageFilter.h"
 #include "itkFileTools.h"
 
-//// causes "H5::DataSpaceIException"
+#include "system32or64.h"
+#ifdef ENVIRONMENT64
+#include "oxtfPipelineBuilder.h"
+#endif // ENVIRONMENT64
 
 TEST(playground, DummyFilter_test) {
 
@@ -36,6 +31,8 @@ TEST(playground, itkBullseyeApi_test) {
     EXPECT_NO_THROW(dummyFunction());
 
 }
+
+#ifdef ENVIRONMENT64
 
 TEST(playground, PipelineRunner_segmentation_test) {
 
@@ -82,6 +79,9 @@ TEST(playground, PipelineRunner_segmentation_test) {
     pipelineBuilder.writeImages<ImageType>(outputImage, outputDir);
 
 }
+
+#endif // ENVIRONMENT64
+
 //
 //TEST(playground, PipelineRunner_moco_test) {
 //
