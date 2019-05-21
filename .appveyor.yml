@@ -7,8 +7,9 @@ init:
   - ps: Update-AppveyorBuild -Version "$($env:APPVEYOR_REPO_BRANCH) - $($env:APPVEYOR_REPO_COMMIT)"
 
 environment:
-  toolset: v140
-  zip_name: itkBullseye_%APPVEYOR_REPO_TAG_NAME%_windows_%PLATFORM%_%toolset%
+  matrix:
+    - toolset: v90
+    - toolset: v140
 
 install:
   - git submodule update --init --recursive
@@ -23,8 +24,10 @@ configuration:
   - Release
 
 before_build:
+  - set zip_name=itkBullseye_%APPVEYOR_REPO_TAG_NAME%_windows_%PLATFORM%_%toolset%
   - echo %platform%
   - echo %configuration%
+  - echo %zip_name%
   - cd %APPVEYOR_BUILD_FOLDER%\..
   - mkdir ITK_install
   - cd ITK_install
