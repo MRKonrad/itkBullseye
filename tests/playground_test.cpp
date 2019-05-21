@@ -32,7 +32,7 @@ TEST(playground, itkBullseyeApi_test) {
 
 }
 
-#ifdef ENVIRONMENT64
+
 
 TEST(playground, PipelineRunner_segmentation_test) {
 
@@ -46,8 +46,11 @@ TEST(playground, PipelineRunner_segmentation_test) {
     typedef itk::Image<PixelType, 3> ImageType;
 
     oxtf::PipelineBuilder pipelineBuilder;
+
+#ifdef ENVIRONMENT64
     oxtf::GraphReader *graphReader = pipelineBuilder.graphReaderMaker(modelFilePath);
     if (!graphReader) return; // no model
+#endif // ENVIRONMENT64
 
     pipelineBuilder.setInputImagesGrayscalePaths(inputFilenames);
     ImageType::Pointer imageIn = pipelineBuilder.readInputImage<ImageType>();
@@ -79,8 +82,6 @@ TEST(playground, PipelineRunner_segmentation_test) {
     pipelineBuilder.writeImages<ImageType>(outputImage, outputDir);
 
 }
-
-#endif // ENVIRONMENT64
 
 //
 //TEST(playground, PipelineRunner_moco_test) {

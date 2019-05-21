@@ -18,7 +18,7 @@ if(itkBullseye_BUILD_TESTING)
   target_link_libraries(itkBullseyeTests PUBLIC tensorflow)
   target_link_libraries(itkBullseyeTests PUBLIC itkTensorFlowLib)
   target_link_libraries(itkBullseyeTests PUBLIC ${ITK_LIBRARIES})
-  target_link_libraries(itkBullseyeTests PUBLIC itkBullseyeLib)
+  target_link_libraries(itkBullseyeTests PUBLIC itkBullseyeStaticLib)
 
   add_test(NAME ctest_tests COMMAND itkBullseyeTests)
 

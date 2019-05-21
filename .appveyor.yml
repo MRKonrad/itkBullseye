@@ -6,22 +6,31 @@ init:
   # Set build version to git commit-hash
   - ps: Update-AppveyorBuild -Version "$($env:APPVEYOR_REPO_BRANCH) - $($env:APPVEYOR_REPO_COMMIT)"
 
-environment:
-  matrix:
-    - toolset: v90
-    - toolset: v140
-
-install:
-  - git submodule update --init --recursive
-  - cd %APPVEYOR_BUILD_FOLDER%\thirdParty\googletest
-#  - git checkout tags/release-1.4.0
-
 platform:
   - Win32
   - x64
 
 configuration:
   - Release
+
+environment:
+  matrix:
+    - toolset: v90
+    - toolset: v140
+
+# TODO: fix in itktensorflow
+# c:\projects\itkbullseye\thirdparty\itktensorflow\include\oxtfGraphReader.h(67): error C2039: 'int64_t' : is not a member of 'std' [C:\projects\itkbullseye\bin\itkBullseyeLib.vcxproj]
+matrix:
+  exclude:
+    - toolset: v90
+      platform: x64
+
+install:
+  - git submodule update --init --recursive
+  - cd %APPVEYOR_BUILD_FOLDER%\thirdParty\googletest
+#  - git checkout tags/release-1.4.0
+
+
 
 before_build:
   - set zip_name=itkBullseye_%APPVEYOR_REPO_TAG_NAME%_windows_%PLATFORM%_%toolset%
